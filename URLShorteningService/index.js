@@ -22,11 +22,11 @@ app.post('/shorten', (req, res, next) => {
         }
         else {
             if (body['hash'] == undefined) {
-            const existingHashes = new Set(shortToLong.keys());
-            do {
-                const consumer = body['url'] + Date.now();
-                hash = crypto.createHash('sha256').update(consumer).digest('base64').substring(0, 7);
-            } while (existingHashes.has(hash));
+                const existingHashes = new Set(shortToLong.keys());
+                do {
+                    const consumer = body['url'] + Date.now();
+                    hash = crypto.createHash('sha256').update(consumer).digest('base64').substring(0, 7);
+                } while (existingHashes.has(hash));
             } else {
                 hash = body['hash'];
             }
