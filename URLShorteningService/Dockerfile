@@ -2,6 +2,8 @@ FROM node:14
 
 WORKDIR /usr/src/app
 
+RUN npm install -g nodemon 
+
 COPY package*.json ./
 
 RUN npm install
@@ -9,4 +11,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 5000
-CMD["nodemon", "index.js"]
+CMD ["nodemon", "index.js"]

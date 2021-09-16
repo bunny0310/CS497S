@@ -6,10 +6,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "create_docker_image": "docker build -t urlshorteningservice .",
-    "docker_dev": "docker run -p 5000:5000 --name assignment2 -v $(pwd):/usr/src/app urlshorteningservice -d"
+    "docker_run_dev": "docker run -p $npm_package_config_host_port:$npm_package_config_docker_port --name $npm_package_config_docker_container_name -v $(pwd):/usr/src/app $npm_package_config_docker_image_name",
+    "docker_run": "docker run -p $npm_package_config_host_port:$npm_package_config_docker_port --name $npm_package_config_docker_container_name $npm_package_config_docker_image_name",
+    "docker_build_dev": "npm run create_docker_image && npm run docker_run_dev",
+    "docker_build": "npm run create_docker_image && npm run docker_run",
+    "docker_clean": "docker stop $npm_package_config_docker_container_name && docker rm $npm_package_config_docker_container_name && docker rmi $npm_package_config_docker_image_name:latest"
   },
   "author": "",
   "license": "ISC",
+  "config": {
+    "docker_container_name": "assignment2",
+    "docker_port": 5000,
+    "host_port": 5000,
+    "docker_image_name": "urlshorteningservice"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
