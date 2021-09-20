@@ -8,10 +8,6 @@ app.use(bodyParser.json());
 const longToShort = new Map();
 const shortToLong = new Map();
 
-app.get('/', (req, res, next) => {
-    return res.status(200).json({"msg": "working"});
-})
-
 app.post('/shorten', (req, res, next) => {
     try {
         const body = req.body;
@@ -21,13 +17,17 @@ app.post('/shorten', (req, res, next) => {
             hash = longToShort.get(url);
         }
         else {
+            const existingHashes = new Set(shortToLong.keys());
             if (body['hash'] == undefined) {
-                const existingHashes = new Set(shortToLong.keys());
                 do {
                     const consumer = body['url'] + Date.now();
-                    hash = crypto.createHash('sha256').update(consumer).digest('base64').substring(0, 7);
+                    hash = crypto.createHash('md5').update(consumer).digest('base64').substring(0, 7);
                 } while (existingHashes.has(hash));
             } else {
+                console.log('abc');
+                if (existingHashes.has(body['hash'])) {
+                    return res.status(400).json({"msg": "hash already exists", "data": null});
+                }
                 hash = body['hash'];
             }
             longToShort.set(body["url"], hash);
@@ -38,6 +38,14 @@ app.post('/shorten', (req, res, next) => {
         console.log(err);
         return res.status(500).json({"msg": err, "data": null});
     }
+});
+
+app.get('/:hash', (req, res, next) => {
+    const hash = req.params['hash'];
+    if (hash == undefined || !new Set(shortToLong.keys()).has(hash)) {
+        return res.status(400).json({"msg": "hash not found or is not provided"});
+    }
+    res.redirect(shortToLong.get(hash));
 });
 
 app.listen(5000, '0.0.0.0', () => {
