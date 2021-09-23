@@ -13,10 +13,10 @@ const shortToLong = new Map();
 app.post('/shorten', (req, res, next) => {
     try {
         const body = req.body;
-        const httpsTest = /^http?s:\/\//;
+        const httpsTest = /^https?:\/\//;
         const url = body['url'];
         if (!httpsTest.test(url)) {
-            return res.status(400).json({'msg': 'Improperly formed request. Please prepend https or http', 'data': null})
+            return res.status(400).json({'msg': 'Improperly formed request. Please prepend "https://" or "http://"', 'data': null})
         }
         let hash = "";
         if (longToShort.has(url)) {
