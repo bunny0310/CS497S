@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "docker_create_image": "docker build -t urlshorteningservice .",
     "docker_create_network": "docker network create -d bridge $npm_package_config_docker_network_name || true",
-    "docker_run_dev": "docker run --name $npm_package_config_docker_container_name --net=$npm_package_config_docker_network_name -v \"$(pwd):/usr/src/app\" $npm_package_config_docker_image_name",
-    "docker_run": "docker run --name $npm_package_config_docker_container_name --net=$npm_package_config_docker_network_name $npm_package_config_docker_image_name",
+    "docker_run_dev": "docker run --name $npm_package_config_docker_container_name -p $npm_package_config_host_port:$npm_package_config_docker_port --net=$npm_package_config_docker_network_name -v \"$(pwd):/usr/src/app\" $npm_package_config_docker_image_name",
+    "docker_run": "docker run --name $npm_package_config_docker_container_name -p $npm_package_config_host_port:$npm_package_config_docker_port --net=$npm_package_config_docker_network_name $npm_package_config_docker_image_name",
     "docker_build_dev": "npm run docker_create_network && npm run docker_create_image && npm run docker_run_dev",
     "docker_build": "npm run docker_create_network && npm run docker_create_image && npm run docker_run",
     "docker_clean": "docker stop $npm_package_config_docker_container_name && docker rm $npm_package_config_docker_container_name && docker rmi $npm_package_config_docker_image_name:latest"
