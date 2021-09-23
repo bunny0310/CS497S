@@ -28,9 +28,8 @@ app.post('/shorten', (req, res, next) => {
                 do {
                     const consumer = body['url'] + Date.now();
                     hash = crypto.createHash('md5').update(consumer).digest('base64').substring(0, 7);
-                } while (existingHashes.has(hash));
+                } while (hash.includes('/') || existingHashes.has(hash));
             } else {
-                console.log('abc');
                 if (existingHashes.has(body['hash'])) {
                     return res.status(400).json({"msg": "hash already exists", "data": null});
                 }
