@@ -20,25 +20,42 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(() => {
+    const hostname = "http://localhost";
+    const portnumber = 5000;
     $("#submit").click(() => {
         const url = $("#url").val();
+        const hash = $("#hash").val();
         if(url == undefined || url.trim() === "") {
             alert("please provide a url");
         }
+        url.trim();
         const data = {
-            url
+            url,
+            hash: hash == undefined || hash.trim() === "" ? undefined : hash
         }
+        console.log(data);
         const success = (data) => {
+            $("#shortenedurl").empty();
             const anchorTag = $("<a></a>");
-            const url = `http://localhost:5000/${data.data}`;
-            const text = `http://shorten.url/${data.data}`;
-            anchorTag.attr("href", url);
-            anchorTag.text(text);
-            $("#shortenedurl").append(anchorTag);
+            $.ajax({
+                type: "GET",
+                url: `${hostname}:${portnumber}/${data.data}`,
+                success: (body) => {
+                    const url = body.data;
+                    const text = `http://shorten.url/${data.data}`;
+                    anchorTag.attr("href", url);
+                    anchorTag.attr("target", "_blank");
+                    anchorTag.text(text);
+                    $("#shortenedurl").append(anchorTag);
+                },
+                contentType: 'application/json',
+                dataType: "json",
+                error: (err) => {console.log(err)}
+            })
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost:5000/shorten",
+            url: `${hostname}:${portnumber}/shorten`,
             data: JSON.stringify(data),
             success: success,
             contentType: 'application/json',
