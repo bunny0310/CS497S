@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Super URL Shortener</title>
+</head>
+<body>
+    <h1>Welcome to the Super URL Shortener!</h1>
+    <label>URL to shorten:
+        <input type="text" name="url" id="url">
+    </label><br>
+    <label>(optional) shortened url:   <b>site.com/</b>
+        <input type="text" name="hash" id="hash">
+    </label><br>
+    <button type="button" id="submit">Submit</button>
+
+    <h3>Your shortened url is: </h3>
+    <div id="shortenedurl"></div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(() => {
+    const hostname = "http://localhost";
+    const portnumber = 5000;
+    $("#submit").click(() => {
+        const url = $("#url").val();
+        const hash = $("#hash").val();
+        if(url == undefined || url.trim() === "") {
+            alert("please provide a url");
+        }
+        url.trim();
+        const data = {
+            url,
+            hash: hash == undefined || hash.trim() === "" ? undefined : hash
+        }
+        console.log(data);
+        const success = (data) => {
+            $("#shortenedurl").empty();
+            const anchorTag = $("<a></a>");
+            $.ajax({
+                type: "GET",
+                url: `${hostname}:${portnumber}/${data.data}`,
+                success: (body) => {
+                    const url = body.data;
+                    const text = `http://shorten.url/${data.data}`;
+                    anchorTag.attr("href", url);
+                    anchorTag.attr("target", "_blank");
+                    anchorTag.text(text);
+                    $("#shortenedurl").append(anchorTag);
+                },
+                contentType: 'application/json',
+                dataType: "json",
+                error: (err) => {console.log(err)}
+            })
+        }
+        $.ajax({
+            type: "POST",
+            url: `${hostname}:${portnumber}/shorten`,
+            data: JSON.stringify(data),
+            success: success,
+            contentType: 'application/json',
+            dataType: "json",
+            error: (err) => {console.log(err)}
+        });
+        return false;
+    });
+});
+</script>
+</html>
