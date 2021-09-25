@@ -1,8 +1,5 @@
 #! /bin/sh
-cd frontend
-sh docker_clean.sh || true
-sh docker_build_dev.sh || true
-cd ..
-cd backend
-npm run docker_clean || true
-npm run docker_build_dev || true
+frontend_replicas=3
+backend_replicas=3
+docker-compose up -d --scale frontend=${frontend_replicas} --scale backend=${backend_replicas}
+sh update_lb_conf.sh

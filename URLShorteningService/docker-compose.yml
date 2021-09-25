@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  loadbalancer:
+    build:
+      context : ./loadbalancer/
+    networks:
+    - assignment2network
+    ports:
+      - "80:80"
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    container_name: loadbalancer
+    restart: always
+
+
+  frontend:
+    image: nginx
+    volumes:
+    - ./frontend:/usr/share/nginx/html
+    networks:
+    - assignment2network
+    restart: always
+
+  backend:
+    build:
+      context: ./backend/
+    volumes:
+    - ./backend:/usr/src/app
+    networks:
+    - assignment2network
+    restart: always
+networks:
+  assignment2network:
+    external: true

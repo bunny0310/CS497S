@@ -21,7 +21,7 @@
 <script>
 $(document).ready(() => {
     const hostname = "http://localhost";
-    const portnumber = 5000;
+    const portnumber = 80;
     $("#submit").click(() => {
         const url = $("#url").val();
         const hash = $("#hash").val();
@@ -39,7 +39,7 @@ $(document).ready(() => {
             const anchorTag = $("<a></a>");
             $.ajax({
                 type: "GET",
-                url: `${hostname}:${portnumber}/${data.data}`,
+                url: `${hostname}:${portnumber}/backend/${data.data}`,
                 success: (body) => {
                     const url = body.data;
                     const text = `http://shorten.url/${data.data}`;
@@ -55,7 +55,7 @@ $(document).ready(() => {
         }
         $.ajax({
             type: "POST",
-            url: `${hostname}:${portnumber}/shorten`,
+            url: `${hostname}:${portnumber}/backend/shorten`,
             data: JSON.stringify(data),
             success: success,
             contentType: 'application/json',
