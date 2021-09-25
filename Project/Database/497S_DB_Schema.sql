@@ -2,18 +2,18 @@ CREATE TABLE `Post` (
   `Id` int AUTO_INCREMENT,
   `Description` text,
   `Latitude` varchar(255),
-  `Longitutde` varchar(255),
-  `Key` varchar(255),
+  `Longitude` varchar(255),
+  `SecretKey` varchar(255),
   `CreatedAt` timestamp,
   `UpdatedAt` timestamp,
-  PRIMARY KEY (`Id`, `Latitude`, `Longitutde`)
+  PRIMARY KEY (`Id`, `Latitude`, `Longitude`)
 );
 
 CREATE TABLE `Comment` (
   `Id` int PRIMARY KEY AUTO_INCREMENT,
   `PostId` int,
   `Value` text,
-  `Key` varchar(255),
+  `SecretKey` varchar(255),
   `CreatedAt` timestamp,
   `UpdatedAt` timestamp
 );
