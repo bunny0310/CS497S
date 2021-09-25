@@ -1,8 +1,8 @@
 CREATE TABLE `Post` (
   `Id` int AUTO_INCREMENT,
   `Description` text,
-  `Latitude` varchar(255),
-  `Longitude` varchar(255),
+  `Latitude` float,
+  `Longitude` float,
   `SecretKey` varchar(255),
   `CreatedAt` timestamp,
   `UpdatedAt` timestamp,
