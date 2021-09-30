@@ -17,6 +17,22 @@ services:
     # command: --secure-file-priv=""
     ports:
       - "3306:3306"
+  
+  posts_service:
+    build:
+      context: PostsService/PostsService
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+    volumes:
+      - ./PostsService/PostsService:/app
+    networks:
+      - network
+    ports:
+      - "5000:5000"
 
 networks:
   network:

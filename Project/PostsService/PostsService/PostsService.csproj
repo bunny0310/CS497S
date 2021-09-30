@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Models\" />
+    <None Remove="EntityFramework" />
+    <None Remove="MySql.Data.EntityFrameworkCore" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Microsoft.EntityFrameworkCore.Tools" />
+    <None Remove="MySql.EntityFrameworkCore" />
+    <None Remove="Controllers\" />
+    <None Remove="GeoCoordinate.NetCore" />
+    <None Remove="System.Device.Location.Portable" />
+    <None Remove="ResultTypes\" />
+    <None Remove="Services\" />
+    <None Remove="AspNetCore.RouteAnalyzer" />
+    <None Remove="GoogleMaps.LocationServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="ResultTypes\" />
+    <Folder Include="Services\" />
+  </ItemGroup> 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="GeoCoordinate.NetCore" Version="1.0.0.1" />
+    <PackageReference Include="GoogleMaps.LocationServices" Version="1.2.0.5" />
+  </ItemGroup>
+</Project>
