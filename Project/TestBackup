@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using PostsService.ResultTypes;
+namespace PostsService.Services
+{
+    public class PostService : IPostService
+    {
+        private readonly ProjectContext context;
+
+        public PostService(ProjectContext _context)
+        {
+            context = _context;
+        }
+        public ExecutionOutcome<Post> CreatePost(Post post)
+        {
+            try
+            {
+                post.CreatedAt = DateTime.UtcNow;
+                post.UpdatedAt = DateTime.UtcNow;
+                HashAlgorithm sha = SHA256.Create();
+                post.SecretKey = sha.ComputeHash(BitConverter.GetBytes(post.CreatedAt.Ticks)).ToString(); // FIXME
+                context.Add(post);
+                context.SaveChanges();
+                var result = new ExecutionOutcome<Post>()
+                {
+                    Message = "Success",
+                    Data = post,
+                    Code = 200
+                };
+                return result;
+            } catch (Exception e)
+            {
+                var result = new ExecutionOutcome<Post>()
+                {
+                    Message = "Failure" + e.StackTrace,
+                    Data = null,
+                    Code = 500
+                };
+                return result;
+            }
+        }
+
+        public ExecutionOutcome<List<Post>> GetPosts(int miles, double latitude, double longitude)
+        {
+            try
+            {
+                var posts = GetPostsWithinRadius(miles, latitude, longitude);
+                return new ExecutionOutcome<List<Post>>()
+                {
+                    Message = "Success",
+                    Data = posts,
+                    Code = 200
+                };
+            } catch (Exception e)
+            {
+                return new ExecutionOutcome<List<Post>>()
+                {
+                    Message = "Failure " + e.StackTrace,
+                    Data = null,
+                    Code = 500
+                };
+            }
+        }
+        private List<Post> GetPostsWithinRadius(int miles, double currentLatitude, double currentLongitude)
+        {
+            return context.Posts
+                .Where(post =>
+                    (Math.Acos((Math.Sin(Math.PI * post.Latitude / 180)
+                    * Math.Sin(Math.PI * currentLatitude / 180))
+                    + (Math.Cos(Math.PI * post.Latitude / 180)
+                    * Math.Cos(Math.PI * currentLatitude / 180)
+                    * Math.Cos(Math.PI * (post.Longitude - currentLongitude) / 180))) * 180 / Math.PI * 60 * 1.1515) < miles)
+                .ToList();
+        }
+    }
+}

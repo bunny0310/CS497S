@@ -1,16 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 using PostsService.ResultTypes;
 namespace PostsService.Services
 {
-    public static class PostService
+    public class PostService : IPostService
     {
-        public static ExecutionOutcome<Post> CreatePost(Post post)
+        private DbContextOptions<ProjectContext> options;
+        public PostService()
+        {
+
+        }
+
+        public PostService(DbContextOptions<ProjectContext> options)
+        {
+            this.options = options;
+        }
+        public ExecutionOutcome<Post> CreatePost(Post post)
         {
             try
             {
-                using (var context = new ProjectContext())
+                using (var context = new ProjectContext(options))
                 {
                     post.CreatedAt = DateTime.UtcNow;
                     post.UpdatedAt = DateTime.UtcNow;
@@ -38,7 +49,7 @@ namespace PostsService.Services
             }
         }
 
-        public static ExecutionOutcome<List<Post>> GetPosts(int miles, double latitude, double longitude)
+        public ExecutionOutcome<List<Post>> GetPosts(int miles, double latitude, double longitude)
         {
             try
             {
