@@ -1,6 +1,15 @@
 version: '3.4'
 
 services:
+  api_gateway:
+    build:
+      context: APIGateway
+    restart: always
+    networks:
+      - network
+    ports:
+      - "80:80"
+
   database:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -31,8 +40,8 @@ services:
       - ./PostsService/PostsService:/app
     networks:
       - network
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
 
 networks:
   network:

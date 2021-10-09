@@ -10,6 +10,13 @@ namespace PostsService.Controllers
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
+        private readonly ServiceFactory serviceFactory;
+
+        public PostsController(ServiceFactory serviceFactory)
+        {
+            this.serviceFactory = serviceFactory;
+        }
+
         // POST: api/Posts/PostsWithinMiles
         [Route("PostsWithinMiles")]
         [HttpPost()]
@@ -19,29 +26,35 @@ namespace PostsService.Controllers
             {
                 return BadRequest(postRequest);
             }
-            var result = PostService.GetPosts(postRequest.Miles, postRequest.Latitude, postRequest.Longitude);
+            var result = serviceFactory.GetPostServiceReal().GetPosts(postRequest.Miles, postRequest.Latitude, postRequest.Longitude);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
-        // POST api/posts/Create
+        // POST api/Posts/Create
         [Route("Create")]
         [HttpPost]
         public IActionResult Post([FromBody] Post post)
         {
-            var result = PostService.CreatePost(post);
+            var result = serviceFactory.GetPostServiceReal().CreatePost(post);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
-        // PUT api/posts/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // GET api/Posts/GetTrending
+        [Route("GetTrending")]
+        [HttpGet]
+        public IActionResult GetTrending()
         {
+            var result = serviceFactory.GetPostServiceReal().GetTrendingPosts();
+            return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
-        // DELETE api/posts/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // GET api/Posts/Comments/{Post Id}
+        [Route("Comments/{id}")]
+        [HttpGet("id")]
+        public IActionResult GetComments(int id)
         {
+            var result = serviceFactory.GetPostServiceReal().GetComments(id);
+            return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
     }
 }

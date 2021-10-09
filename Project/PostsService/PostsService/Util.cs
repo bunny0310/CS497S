@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace PostsService
 {
@@ -14,9 +15,16 @@ namespace PostsService
             var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
             return $"Server={host};User={username};Password={password};Database={db};";
         }
-        public static List<Post> GetPostsWithinRadius(int miles, double currentLatitude, double currentLongitude)
+        public static List<Post> GetPostsWithinRadius(
+            double currentLatitude,
+            double currentLongitude,
+            int miles,
+            DbContextOptions<ProjectContext> options = null
+            )
         {
-            using (var context = new ProjectContext())
+            using (var context = options != null
+                ? new ProjectContext(options)
+                : new ProjectContext())
             {
                 return context.Posts
                     .Where(post =>
