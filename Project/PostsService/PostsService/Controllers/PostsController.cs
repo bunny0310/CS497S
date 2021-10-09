@@ -10,6 +10,13 @@ namespace PostsService.Controllers
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
+        private readonly ServiceFactory serviceFactory;
+
+        public PostsController(ServiceFactory serviceFactory)
+        {
+            this.serviceFactory = serviceFactory;
+        }
+
         // POST: api/Posts/PostsWithinMiles
         [Route("PostsWithinMiles")]
         [HttpPost()]
@@ -19,7 +26,7 @@ namespace PostsService.Controllers
             {
                 return BadRequest(postRequest);
             }
-            var result = PostService.GetPosts(postRequest.Miles, postRequest.Latitude, postRequest.Longitude);
+            var result = serviceFactory.GetPostServiceReal().GetPosts(postRequest.Miles, postRequest.Latitude, postRequest.Longitude);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
@@ -28,7 +35,7 @@ namespace PostsService.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Post post)
         {
-            var result = PostService.CreatePost(post);
+            var result = serviceFactory.GetPostServiceReal().CreatePost(post);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
