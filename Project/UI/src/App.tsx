@@ -1,7 +1,8 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { Redirect, Route } from 'react-router';
+import { IonApp, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import { location, trendingUp, create} from 'ionicons/icons';
+import Nearby from './pages/Nearby';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -11,29 +12,46 @@ import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
 /* Theme variables */
 import './theme/variables.css';
 
+/* Custom css styles */
+import './App.css';
+
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
+    <IonHeader>
+      <IonToolbar color="secondary">
+        <IonTitle>Loc Chat</IonTitle>
+        <IonButtons slot="start">
+          <img src={`${process.env.PUBLIC_URL}/assets/icon/LocChat.png`} className="icon" />
+        </IonButtons>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent>
+      <IonReactRouter>
+        <IonTabs>
+            <IonRouterOutlet>
+              <Redirect exact path="/tabs" to="/tabs/nearby" />
+              <Route path="/tabs/nearby" render={() => <Nearby />} exact={true} />
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="nearby" href="/tabs/nearby">
+                <IonIcon icon={location} />
+                <IonLabel>Nearby</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="trending" href="/tabs/trending">
+                <IonIcon icon={trendingUp} />
+                <IonLabel>Trending</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="create" href="/tabs/create">
+                <IonIcon icon={create} />
+                <IonLabel>Add</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonContent>
   </IonApp>
 );
 
