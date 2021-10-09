@@ -6,6 +6,9 @@ Project/.env
 Project/PostsService/PostsService/.vs
 Project/PostsService/PostsService/bin/
 Project/PostsService/PostsService/obj/
+Project/PostsService/Tests/.vs
+Project/PostsService/Tests/bin/
+Project/PostsService/Tests/obj/
 
 # Miscellanious
 .DS_Store

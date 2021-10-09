@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using PostsService.ResultTypes;
@@ -21,7 +22,13 @@ namespace PostsService.Services
         {
             try
             {
-                using (var context = new ProjectContext(options))
+                if (post is null)
+                {
+                    throw new ArgumentNullException(nameof(post));
+                }
+                using (var context = options != null
+                    ? new ProjectContext(options)
+                    : new ProjectContext())
                 {
                     post.CreatedAt = DateTime.UtcNow;
                     post.UpdatedAt = DateTime.UtcNow;
@@ -53,7 +60,7 @@ namespace PostsService.Services
         {
             try
             {
-                var posts = Util.GetPostsWithinRadius(miles, latitude, longitude);
+                var posts = Util.GetPostsWithinRadius(latitude, longitude, miles);
                 Console.WriteLine(posts);
                 return new ExecutionOutcome<List<Post>>()
                 {
@@ -68,6 +75,69 @@ namespace PostsService.Services
                     Message = "Failure " + e.StackTrace,
                     Data = null,
                     Code = 500
+                };
+            }
+        }
+
+        public ExecutionOutcome<List<Post>> GetTrendingPosts()
+        {
+            try
+            {
+                using (var context = options != null
+                    ? new ProjectContext(options)
+                    : new ProjectContext())
+                {
+                    var dateCurrentMinus7Days = DateTime.UtcNow.AddDays(-7);
+                    var list = context.Posts
+                        .Where(post => post.CreatedAt > dateCurrentMinus7Days)
+                        .Where(post => post.Votes > 10)
+                        .ToList();
+                    return new ExecutionOutcome<List<Post>>()
+                    {
+                        Code = 200,
+                        Data = list,
+                        Message = "Success"
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                return new ExecutionOutcome<List<Post>>()
+                {
+                    Code = 500,
+                    Data = null,
+                    Message = "Failure " + e.StackTrace,
+                };
+            }
+        }
+
+        public ExecutionOutcome<List<Comment>> GetComments(int id)
+        {
+            try
+            {
+                using (var context = options != null
+                    ? new ProjectContext(options)
+                    : new ProjectContext())
+                {
+                    var list = context.Comments
+                        .Where(comment => comment.Id == id)
+                        .ToList();
+
+                    return new ExecutionOutcome<List<Comment>>()
+                    {
+                        Code = 200,
+                        Data = list,
+                        Message = "Success"
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                return new ExecutionOutcome<List<Comment>>()
+                {
+                    Code = 500,
+                    Data = null,
+                    Message = "Failure " + e.StackTrace,
                 };
             }
         }

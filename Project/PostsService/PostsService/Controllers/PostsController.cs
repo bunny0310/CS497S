@@ -30,7 +30,7 @@ namespace PostsService.Controllers
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
-        // POST api/posts/Create
+        // POST api/Posts/Create
         [Route("Create")]
         [HttpPost]
         public IActionResult Post([FromBody] Post post)
@@ -39,16 +39,22 @@ namespace PostsService.Controllers
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
-        // PUT api/posts/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // GET api/Posts/GetTrending
+        [Route("GetTrending")]
+        [HttpGet]
+        public IActionResult GetTrending()
         {
+            var result = serviceFactory.GetPostServiceReal().GetTrendingPosts();
+            return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
-        // DELETE api/posts/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // GET api/Posts/Comments/{Post Id}
+        [Route("Comments/{id}")]
+        [HttpGet("id")]
+        public IActionResult GetComments(int id)
         {
+            var result = serviceFactory.GetPostServiceReal().GetComments(id);
+            return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
     }
 }

@@ -1,18 +1,10 @@
 ﻿<Properties StartupConfiguration="{857E2503-FF4C-429D-B878-CF4600C32CA5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="../../../CS576/Assignment3/Assets/EndZone.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PostsService/Util.cs">
     <Files>
-      <File FileName="PostsService/Services/PostService.cs" Line="20" Column="59" />
-      <File FileName="PostsService/UnitTest1.cs" Line="19" Column="10" />
-      <File FileName="PostsService/ProjectContext.cs" Line="2" Column="1" />
-      <File FileName="PostsService/Util.cs" Line="20" Column="14" />
-      <File FileName="PostsService/Models/PostRequest.cs" Line="18" Column="46" />
-      <File FileName="PostsService/Post.cs" Line="1" Column="1" />
-      <File FileName="PostsService/ServiceFactory.cs" Line="16" Column="35" />
-      <File FileName="PostsService/Services/IPostService.cs" Line="8" Column="6" />
-      <File FileName="PostsService/Comment.cs" Line="1" Column="1" />
-      <File FileName="PostsService/ResultTypes/ExecutionOutcome.cs" Line="4" Column="34" />
-      <File FileName="PostsService/Dockerfile" Line="9" Column="24" />
-      <File FileName="../../../CS576/Assignment3/Assets/EndZone.cs" Line="1" Column="1" />
+      <File FileName="PostsService/Services/PostService.cs" Line="31" Column="30" />
+      <File FileName="PostsService/Controllers/PostsController.cs" Line="52" Column="29" />
+      <File FileName="PostsService/Util.cs" Line="14" Column="17" />
+      <File FileName="PostsService/ProjectContext.cs" Line="17" Column="71" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,29 +12,15 @@
           <Node name="PostsService" expanded="True">
             <Node name="PostsService" expanded="True">
               <Node name="Controllers" expanded="True" />
-              <Node name="Models" expanded="True" />
-              <Node name="ResultTypes" expanded="True" />
-              <Node name="Services" expanded="True">
-                <Node name="PostService.cs" selected="True" />
-              </Node>
+              <Node name="Services" expanded="True" />
+              <Node name="Util.cs" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">
         <State name="__root__">
-          <Node name="PostsService" expanded="True">
-            <Node name="PostsService" expanded="True">
-              <Node name="PostsService" expanded="True">
-                <Node name="PostServiceTest" expanded="True">
-                  <Node name="TestCreatePost" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
+          <Node name="PostsService" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
