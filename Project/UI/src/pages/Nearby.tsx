@@ -1,45 +1,52 @@
-import { 
-    IonToolbar, 
-    IonCard, 
-    IonCardHeader, 
-    IonCardSubtitle, 
-    IonCardTitle, 
-    IonCardContent, 
-    IonIcon, 
-    IonButton, 
-    IonFooter,
-    IonButtons,
-    IonLabel} 
-    from '@ionic/react';
-
-    import { thumbsUp} from 'ionicons/icons';
+import { IonContent, IonSpinner } from '@ionic/react';
 import React from 'react';
+import PostCard from '../components/PostCard';
+import { getTrendingPosts, Post } from '../services/posts-webservice';
 
-class Nearby extends React.Component<any, any> {
+interface NearbyState {
+    loading: boolean;
+    posts: Post[];
+}
+class Nearby extends React.Component<any, NearbyState> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            loading: false,
+            posts: []
+        }
+    }
+    componentDidMount() {
+        this.setState({...this.state, loading: true});
+        this.fetchPosts();
+        this.setState({...this.state, loading: false});
+    }
 
+    fetchPosts = () => {
+        getTrendingPosts()
+        .then((data) => {
+            console.log(data);
+            this.setState({
+                posts: data
+            });
+        });
+    }
     render() {
+        const posts: Post[] = this.state.posts;
+
         return (
-            <IonCard>
-                <IonCardHeader>
-                    <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
-                    <IonCardTitle>Card Title</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                Keep close to Nature's heart... and break clear away, once in awhile,
-                and climb a mountain or spend a week in the woods. Wash your spirit clean.
-                </IonCardContent>
-                <IonFooter>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonButton>
-                            <IonIcon slot="start" icon={thumbsUp}/>
-                            <IonLabel>5</IonLabel>
-                        </IonButton>
-                    </IonButtons>
-                </IonToolbar>
-                </IonFooter>
-            </IonCard>
-        );
+            <IonContent>
+                {
+                    !this.state.loading
+                    ? posts.map((post) => {
+                        return <PostCard key={post.id} description={post.description} votes={post.votes}></PostCard>;
+                    })
+                    : 
+                    <>
+                    <IonSpinner className={"loadingSpinner"}/>
+                    </>
+                }
+            </IonContent>
+        )
     }
 }
 
