@@ -1,13 +1,18 @@
 import { IonContent, IonSpinner } from '@ionic/react';
 import React from 'react';
 import PostCard from '../components/PostCard';
-import { getTrendingPosts, Post } from '../services/posts-webservice';
+import { Post, PostsWebservice } from '../services/posts-webservice';
+import { wire } from '../services/serviceInjection';
 
+interface NearbyProps {};
+interface NearbyPropsWithServices extends NearbyProps {
+    postsWebService: PostsWebservice;
+}
 interface NearbyState {
     loading: boolean;
     posts: Post[];
 }
-class Nearby extends React.Component<any, NearbyState> {
+class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -22,7 +27,8 @@ class Nearby extends React.Component<any, NearbyState> {
     }
 
     fetchPosts = () => {
-        getTrendingPosts()
+        this.props.postsWebService
+        .getTrendingPosts()
         .then((data) => {
             console.log(data);
             this.setState({
@@ -50,4 +56,4 @@ class Nearby extends React.Component<any, NearbyState> {
     }
 }
 
-export default Nearby;
+export default wire<NearbyProps>(Nearby, ["postsWebService"]);
