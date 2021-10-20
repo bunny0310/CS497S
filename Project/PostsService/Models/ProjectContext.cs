@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 #nullable disable
 
-namespace PostsService
+namespace Models
 {
     public partial class ProjectContext : DbContext
     {

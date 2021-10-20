@@ -1,5 +1,5 @@
-﻿using System;
-namespace PostsService.ResultTypes
+﻿
+namespace CommentsService.ResultTypes
 {
     public class ExecutionOutcome<T>
     {

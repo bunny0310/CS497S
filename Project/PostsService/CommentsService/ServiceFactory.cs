@@ -1,20 +1,20 @@
 ﻿using System;
+using CommentsService.Services;
 using Microsoft.EntityFrameworkCore;
-using PostsService.Services;
 using Models;
 
-namespace PostsService
+namespace CommentsService
 {
     public class ServiceFactory
     {
-        public IPostService GetPostServiceReal()
+        public ICommentService GetPostServiceReal()
         {
-            return new PostService();
+            return new CommentService();
         }
 
-        public IPostService GetPostServiceMockDb(DbContextOptions<ProjectContext> options)
+        public ICommentService GetPostServiceMockDb(DbContextOptions<ProjectContext> options)
         {
-            return new PostService(options);    
+            return new CommentService(options);    
         }
     }
 }

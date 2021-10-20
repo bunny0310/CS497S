@@ -3,10 +3,17 @@ URLShorteningService/backend/node_modules/
 
 # Project
 Project/.env
-Project/PostsService/PostsService/.vs
+Project/PostsService/.vs/
+Project/PostsService/PostsService/.vs/
 Project/PostsService/PostsService/bin/
 Project/PostsService/PostsService/obj/
-Project/PostsService/Tests/.vs
+Project/PostsService/CommentsService/.vs/
+Project/PostsService/CommentsService/bin/
+Project/PostsService/CommentsService/obj/
+Project/PostsService/Models/.vs/
+Project/PostsService/Models/bin/
+Project/PostsService/Models/obj/
+Project/PostsService/Tests/.vs/
 Project/PostsService/Tests/bin/
 Project/PostsService/Tests/obj/
 

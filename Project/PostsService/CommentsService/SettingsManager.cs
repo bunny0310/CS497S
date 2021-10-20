@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace PostsService
+namespace CommentsService
 {
     public static class SettingsManager
     {

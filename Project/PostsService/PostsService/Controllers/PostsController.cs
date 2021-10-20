@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PostsService.Models;
 using PostsService.Services;
+using Models;
 
 namespace PostsService.Controllers
 {
@@ -45,15 +46,6 @@ namespace PostsService.Controllers
         public IActionResult GetTrending()
         {
             var result = serviceFactory.GetPostServiceReal().GetTrendingPosts();
-            return result.Code == 200 ? Ok(result) : StatusCode(500, result);
-        }
-
-        // GET api/Posts/Comments/{Post Id}
-        [Route("Comments/{id}")]
-        [HttpGet("id")]
-        public IActionResult GetComments(int id)
-        {
-            var result = serviceFactory.GetPostServiceReal().GetComments(id);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
     }
