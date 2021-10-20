@@ -6,6 +6,7 @@ Project/.env
 Project/PostsService/PostsService/.vs
 Project/PostsService/PostsService/bin/
 Project/PostsService/PostsService/obj/
+Project/VotesService/node_modules/
 
 # Miscellanious
 .DS_Store
