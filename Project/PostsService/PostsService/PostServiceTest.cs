@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace PostsService
 {
