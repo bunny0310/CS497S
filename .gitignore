@@ -21,3 +21,4 @@ Project/VotesService/node_modules/
 # Miscellanious
 .DS_Store
 497S.pem
+.vscode/
