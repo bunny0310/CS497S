@@ -1,6 +1,15 @@
 version: '3.4'
 
 services:
+  api_gateway:
+    build:
+      context: APIGateway
+    restart: always
+    networks:
+      - network
+    ports:
+      - "80:80"
+
   database:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -20,7 +29,8 @@ services:
   
   posts_service:
     build:
-      context: PostsService/PostsService
+      context: PostsService
+      dockerfile: Dockerfile-Posts
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
@@ -31,8 +41,25 @@ services:
       - ./PostsService/PostsService:/app
     networks:
       - network
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
+
+  comments_service:
+    build:
+      context: PostsService
+      dockerfile: Dockerfile-Comments
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+    volumes:
+      - ./PostsService/CommentsService:/app
+    networks:
+      - network
+    expose:
+      - "5000"
 
   votes_service:
     build:

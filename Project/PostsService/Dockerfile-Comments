@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0
+
+WORKDIR /Models
+COPY Models/*.csproj ./
+RUN dotnet restore
+
+COPY Models/. ./
+
+WORKDIR ../app
+COPY CommentsService/*.csproj ./
+RUN dotnet restore
+
+COPY CommentsService/. ./
+
+EXPOSE 5000
+CMD ["dotnet", "watch", "run"];
