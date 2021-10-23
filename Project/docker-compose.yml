@@ -74,8 +74,8 @@ services:
       - ./VotesService:/app
     networks:
       - network
-    ports:
-      - "3003:3003"
+    expose:
+      - "5003"
 
       
 networks:
