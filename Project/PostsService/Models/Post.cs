@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
-namespace PostsService
+namespace Models
 {
     public partial class Post
     {

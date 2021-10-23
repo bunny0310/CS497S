@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using PostsService.ResultTypes;
 namespace PostsService.Services
 {
@@ -103,37 +104,6 @@ namespace PostsService.Services
             catch (Exception e)
             {
                 return new ExecutionOutcome<List<Post>>()
-                {
-                    Code = 500,
-                    Data = null,
-                    Message = "Failure " + e.StackTrace,
-                };
-            }
-        }
-
-        public ExecutionOutcome<List<Comment>> GetComments(int id)
-        {
-            try
-            {
-                using (var context = options != null
-                    ? new ProjectContext(options)
-                    : new ProjectContext())
-                {
-                    var list = context.Comments
-                        .Where(comment => comment.Id == id)
-                        .ToList();
-
-                    return new ExecutionOutcome<List<Comment>>()
-                    {
-                        Code = 200,
-                        Data = list,
-                        Message = "Success"
-                    };
-                }
-            }
-            catch (Exception e)
-            {
-                return new ExecutionOutcome<List<Comment>>()
                 {
                     Code = 500,
                     Data = null,

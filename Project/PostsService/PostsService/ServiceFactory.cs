@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using PostsService.Services;
+using Models;
 
 namespace PostsService
 {

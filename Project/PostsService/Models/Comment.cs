@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace PostsService
+namespace Models
 {
     public partial class Comment
     {

@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'PostsService' " />
   <ItemGroup>
     <None Remove="Models\" />
     <None Remove="EntityFramework" />
