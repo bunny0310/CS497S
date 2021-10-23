@@ -2,8 +2,9 @@
 
 FROM node
 WORKDIR /app
+RUN npm install -g nodemon
 COPY package*.json ./
 COPY . .
 RUN npm install
-CMD ["node", "index.js"]
+CMD ["nodemon", "index.js"]
 

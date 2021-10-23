@@ -14,21 +14,22 @@ let con = mysql.createConnection({
     database: process.env.MYSQL_DATABASE
   });
 
-
-app.get("/", (req, res) => {
-    return "Hello World"
-});
-
 app.post('/vote', (req, res) => {
-    //let sample_input = {"id" : "001", "type" : "Comments"}
-    con.connect(function(err) {
-        if (err) throw err;
-        query_db(con, "UPDATE " + sample_input.type + " SET Votes = Votes + 1 WHERE id = " + sample_input.id)        
-    });
+    try {
+        con.connect(function(err) {
+            if (err) throw err;
+            query_db(con, `UPDATE ${req.body.type} SET Votes = Votes + 1 WHERE id = ${req.body.id}`);        
+        });
+        return res.status(200).json({"msg": "success"});
+    }
+    catch(err) {
+        return res.status(500).json({"msg": `Error: ${err}`});
+    }
+    
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+app.listen(port, '0.0.0.0', () => {
+  console.log(`votes service listening at http://localhost:${port}`)
 })
 
 function query_db(con, str){
