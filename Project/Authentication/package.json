@@ -1,0 +1,29 @@
+{
+	"name": "authenticationservice",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"dependencies": {
+		"axios": "^0.23.0",
+		"cryptico": "^1.0.2",
+		"crypto": "^1.0.1",
+		"express": "^4.17.1",
+		"nodemon": "^2.0.14"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"docker_create_image": "docker build -t $npm_package_config_docker_name .",
+		"docker_run_dev": "docker run --name $npm_package_config_docker_name -p $npm_package_config_host_port:$npm_package_config_docker_port -v \"$(pwd):/usr/src/app\" $npm_package_config_docker_name",
+		"docker_run": "docker run --name $npm_package_docker_name -p $npm_package_config_host_port:$npm_package_config_docker_port $npm_package_config_docker_name",
+		"docker_build_dev": "npm run docker_create_image && npm run docker_run_dev",
+		"docker_build": "npm run docker_create_image && docker_run",
+		"docker_clean": "docker stop $npm_package_config_docker_name && docker rm $npm_package_config_docker_name && docker rmi $npm_package_config_docker_name:latest"
+	},
+	"config": {
+		"docker_name": "authenticationservice",
+		"docker_port": 5000,
+		"host_port": 5000
+	},
+	"author": "Thomas Weyermann",
+	"license": "ISC"
+}
