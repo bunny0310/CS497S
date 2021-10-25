@@ -16,7 +16,10 @@ Project/PostsService/Models/obj/
 Project/PostsService/Tests/.vs/
 Project/PostsService/Tests/bin/
 Project/PostsService/Tests/obj/
+Project/VotesService/node_modules/
 
 # Miscellanious
 .DS_Store
-
+497S.pem
+Project/Resources/497S.pem
+.vscode/
