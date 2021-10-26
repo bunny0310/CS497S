@@ -1,5 +1,4 @@
 version: '3.4'
-
 services:
   api_gateway:
     build:
@@ -76,6 +75,17 @@ services:
       - network
     expose:
       - "5003"
+
+  ui:
+    build:
+      context: UI
+    restart: always
+    volumes:
+      - ./UI:/app
+    networks:
+      - network
+    ports:
+      - 8100:8100
 
       
 networks:
