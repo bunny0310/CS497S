@@ -9,6 +9,34 @@ services:
     ports:
       - "80:80"
 
+  authentication_service:
+    build:
+      context: AuthenticationService
+    restart: always
+    volumes:
+      - ./AuthenticationService:/usr/src/app
+    networks:
+      - network
+    expose:
+      - "5000"
+
+ comments_service:
+    build:
+      context: PostsService
+      dockerfile: Dockerfile-Comments
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+    volumes:
+      - ./PostsService/CommentsService:/app
+    networks:
+      - network
+    expose:
+      - "5000"
+
   database:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -43,23 +71,17 @@ services:
     expose:
       - "5000"
 
-  comments_service:
+  ui:
     build:
-      context: PostsService
-      dockerfile: Dockerfile-Comments
+      context: UI
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
     volumes:
-      - ./PostsService/CommentsService:/app
+      - ./UI:/app
     networks:
       - network
-    expose:
-      - "5000"
-
+    ports:
+      - 8100:8100
+      
   votes_service:
     build:
       context: VotesService
@@ -75,17 +97,6 @@ services:
       - network
     expose:
       - "5003"
-
-  ui:
-    build:
-      context: UI
-    restart: always
-    volumes:
-      - ./UI:/app
-    networks:
-      - network
-    ports:
-      - 8100:8100
 
       
 networks:
