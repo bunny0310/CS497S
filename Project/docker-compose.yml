@@ -77,6 +77,17 @@ services:
     expose:
       - "5003"
 
+  authentication_service:
+    build:
+      context: AuthenticationService
+    restart: always
+    volumes:
+      - ./AuthenticationService:/usr/src/app
+    networks:
+      - network
+    expose:
+      - "5000"
+
       
 networks:
   network:
