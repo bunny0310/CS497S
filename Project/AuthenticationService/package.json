@@ -16,7 +16,7 @@
 		"docker_run_dev": "docker run --name $npm_package_config_docker_name -p $npm_package_config_host_port:$npm_package_config_docker_port -v \"$(pwd):/usr/src/app\" $npm_package_config_docker_name",
 		"docker_run": "docker run --name $npm_package_docker_name -p $npm_package_config_host_port:$npm_package_config_docker_port $npm_package_config_docker_name",
 		"docker_build_dev": "npm run docker_create_image && npm run docker_run_dev",
-		"docker_build": "npm run docker_create_image && docker_run",
+		"docker_build": "npm run docker_create_image && npm run docker_run",
 		"docker_clean": "docker stop $npm_package_config_docker_name && docker rm $npm_package_config_docker_name && docker rmi $npm_package_config_docker_name:latest"
 	},
 	"config": {
