@@ -4,13 +4,11 @@
 The authentication service allows for users to prove they hold a private key without revealing their private key.
 
 ## How to use
-While in the Project/AuthenticationService directory, ``npm run docker_build`` will automatically build the image and run it.
+While in the Project directory, ``docker-compose up -d`` will automatically build and run the authentication micorservice.
 
-Alternatively ``npm run docker_build_dev`` will automatically build the image and run it with the AuthenticationService mounted as a volume for the container, so any changes to the local files will persist (automatically since this service uses nodemon).
+You may now interact with the container using ``http://localhost/authentication_service/<endpoint>``
 
-You may now interact with the container using ``http://localhost/authentication/service/<endpoint>``
-
-When you are finished, run ``npm run docker_clean`` from a separate terminal to stop the container, remove the containter, and remove the image.
+When you are finished, run ``docker-compose down``. This will stop and remove all containers, but it will not remove the images.
 
 ## Endpoints
 To login with a public key, use (GET) ``/login?pubKey=<your public key>``. This will request that the server encrypt a random string using your public key and send it back.
