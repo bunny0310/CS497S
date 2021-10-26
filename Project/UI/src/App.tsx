@@ -17,8 +17,11 @@ import './theme/variables.css';
 
 /* Custom css styles */
 import './App.css';
+import { initializeServices } from './services/registerServices';
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+  initializeServices();
+  return (
   <IonApp>
     <IonHeader>
       <IonToolbar color="secondary">
@@ -33,6 +36,7 @@ const App: React.FC = () => (
         <IonTabs>
             <IonRouterOutlet>
               <Redirect exact path="/tabs" to="/tabs/nearby" />
+              <Redirect exact path="/" to="/tabs/nearby" />
               <Route path="/tabs/nearby" render={() => <Nearby />} exact={true} />
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
@@ -52,7 +56,7 @@ const App: React.FC = () => (
         </IonTabs>
       </IonReactRouter>
     </IonContent>
-  </IonApp>
-);
+  </IonApp>);
+};
 
 export default App;
