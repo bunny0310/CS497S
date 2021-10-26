@@ -61,6 +61,23 @@ services:
     expose:
       - "5000"
 
+  votes_service:
+    build:
+      context: VotesService
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+    volumes:
+      - ./VotesService:/app
+    networks:
+      - network
+    expose:
+      - "5003"
+
+      
 networks:
   network:
 
