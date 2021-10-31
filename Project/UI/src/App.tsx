@@ -17,6 +17,7 @@ import './theme/variables.css';
 
 /* Custom css styles */
 import './App.css';
+import AddPost from './pages/AddPost';
 
 const App: React.FC = () => (
   <IonApp>
@@ -34,6 +35,7 @@ const App: React.FC = () => (
             <IonRouterOutlet>
               <Redirect exact path="/tabs" to="/tabs/nearby" />
               <Route path="/tabs/nearby" render={() => <Nearby />} exact={true} />
+              <Route path="/tabs/create" render={() => <AddPost />} exact={true} />
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
               <IonTabButton tab="nearby" href="/tabs/nearby">
