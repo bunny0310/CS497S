@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.810.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostsService", "PostsService\PostsService.csproj", "{857E2503-FF4C-429D-B878-CF4600C32CA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{091DD3D3-3439-43D8-A03D-D220A2ED9279}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommentsService", "CommentsService\CommentsService.csproj", "{1D65CD2E-9766-4332-A93C-7504F7DB3508}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{857E2503-FF4C-429D-B878-CF4600C32CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{857E2503-FF4C-429D-B878-CF4600C32CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{857E2503-FF4C-429D-B878-CF4600C32CA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{091DD3D3-3439-43D8-A03D-D220A2ED9279}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{091DD3D3-3439-43D8-A03D-D220A2ED9279}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{091DD3D3-3439-43D8-A03D-D220A2ED9279}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{091DD3D3-3439-43D8-A03D-D220A2ED9279}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D65CD2E-9766-4332-A93C-7504F7DB3508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D65CD2E-9766-4332-A93C-7504F7DB3508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D65CD2E-9766-4332-A93C-7504F7DB3508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D65CD2E-9766-4332-A93C-7504F7DB3508}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,41 @@
+﻿<Properties StartupConfiguration="{857E2503-FF4C-429D-B878-CF4600C32CA5}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CommentsService/Services/CommentService.cs">
+    <Files>
+      <File FileName="CommentsService/Controllers/CommentsController.cs" Line="20" Column="25" />
+      <File FileName="CommentsService/Services/ICommentService.cs" Line="9" Column="6" />
+      <File FileName="CommentsService/Startup.cs" Line="1" Column="1" />
+      <File FileName="CommentsService/Program.cs" Line="28" Column="6" />
+      <File FileName="PostsService/Program.cs" Line="7" Column="1" />
+      <File FileName="CommentsService/appsettings.json" Line="1" Column="1" />
+      <File FileName="CommentsService/Services/CommentService.cs" Line="33" Column="53" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="PostsService" expanded="True">
+            <Node name="CommentsService" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="ResultTypes" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="CommentService.cs" selected="True" />
+              </Node>
+            </Node>
+            <Node name="PostsService" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="PostsService" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.PostsService PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

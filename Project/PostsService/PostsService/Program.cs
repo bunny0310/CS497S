@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-
+using Models;
 namespace PostsService
 {
     public class Program
