@@ -14,9 +14,10 @@ import {
     from '@ionic/react';
 import "./AddPost.css";
 import React, { FormEventHandler, useState } from 'react';
+import IonInputWrapper from '../components/IonInputWrapper';
 
 interface AddPostState {
-    isMessageValid : boolean;
+    isDescriptionValid : boolean;
     isTitleValid : boolean;
 }
 
@@ -24,15 +25,43 @@ class AddPost extends React.Component<any, AddPostState> {
     constructor (props : any) {
         super(props);
         this.state = {
-            isMessageValid : false,
+            isDescriptionValid : false,
             isTitleValid : false
         };
     }
-    titleHandler (event : FormEventHandler<HTMLIonInputElement>) {
-        console.log(event);
+
+    descriptionHandler = (event : CustomEvent) => {
+        const val = event.detail.value.trim();
+        if (val.length < 5) {
+            this.setState({
+                ...this.state,
+                isDescriptionValid: false
+            })
+        } else {
+            this.setState({
+                ...this.state,
+                isDescriptionValid: true
+            })        
+        }
     }
+
+    titleHandler = (event : CustomEvent) => {
+        const val = event.detail.value.trim();
+        if (val.length < 5) {
+            this.setState({
+                ...this.state,
+                isTitleValid: false
+            })
+        } else {
+            this.setState({
+                ...this.state,
+                isTitleValid: true
+            })        
+        }
+    }
+
     render() {
-        const isFormValid = this.state.isMessageValid && this.state.isTitleValid;
+        const isFormValid = this.state.isDescriptionValid && this.state.isTitleValid;
         return (
             <IonContent>
                 <IonText color="dark" className={"centered"}>
@@ -41,11 +70,16 @@ class AddPost extends React.Component<any, AddPostState> {
                 <IonCard>
                     <IonCardHeader>
                         <IonCardTitle>
-                            <IonInput onChange={this.titleHandler} placeholder="Post Title"></IonInput>
+                            <IonInputWrapper 
+                                isValid = {this.state.isTitleValid} 
+                                onChange={this.titleHandler} 
+                                placeholder="Post Title"
+                                validationMessage="Please enter a valid title."
+                                ></IonInputWrapper>
                         </IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent>
-                        <IonTextarea placeholder="Your Description Here">
+                        <IonTextarea onIonChange={this.descriptionHandler} placeholder="Your Description Here" style={{"border": "0.2px solid"}}>
                         </IonTextarea>
                     </IonCardContent>
                     <IonFooter>
