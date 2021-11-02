@@ -10,11 +10,17 @@ namespace Models
 {
     public partial class ProjectContext : DbContext
     {
+        string ConnectionString { get; set; }
         public ProjectContext()
+        {
+
+        }
+
+        public ProjectContext(string connectionString)
         {
         }
 
-        public ProjectContext(DbContextOptions<ProjectContext> options)
+        public ProjectContext(DbContextOptions<ProjectContext> options, string connectionString)
             : base(options)
         {
         }

@@ -14,5 +14,8 @@ namespace PostsService
                     .AddJsonFile("appsettings.json")
                     .Build();
         }
+
+        public readonly static string DEVELOPMENT = "Development";
+        public readonly static string PRODUCTION = "Production";
     }
 }

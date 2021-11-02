@@ -27,7 +27,7 @@ namespace PostsService.Controllers
             {
                 return BadRequest(postRequest);
             }
-            var result = serviceFactory.GetPostServiceReal().GetPosts(postRequest.Miles, postRequest.Latitude, postRequest.Longitude);
+            var result = serviceFactory.GetPostService().GetPosts(postRequest.Miles, postRequest.Latitude, postRequest.Longitude);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
@@ -36,7 +36,7 @@ namespace PostsService.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Post post)
         {
-            var result = serviceFactory.GetPostServiceReal().CreatePost(post);
+            var result = serviceFactory.GetPostService().CreatePost(post);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
@@ -45,7 +45,7 @@ namespace PostsService.Controllers
         [HttpGet]
         public IActionResult GetTrending()
         {
-            var result = serviceFactory.GetPostServiceReal().GetTrendingPosts();
+            var result = serviceFactory.GetPostService().GetTrendingPosts();
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
     }
