@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  database:
+  database-shard-1:
     image: mysql
     deploy:
       replicas: 3
@@ -19,6 +19,44 @@ services:
     # command: --secure-file-priv=""
     ports:
       - "3306:3306"
+
+  database-shard-2:
+    image: mysql
+    deploy:
+      replicas: 3
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+    - ./Database/init:/docker-entrypoint-initdb.d
+    networks:
+    - network
+    security_opt:
+      - seccomp:unconfined
+    # command: --secure-file-priv=""
+    ports:
+      - "3307:3306"
+
+  database-shard-3:
+    image: mysql
+    deploy:
+      replicas: 3
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+    - ./Database/init:/docker-entrypoint-initdb.d
+    networks:
+    - network
+    security_opt:
+      - seccomp:unconfined
+    # command: --secure-file-priv=""
+    ports:
+      - "3308:3306"
   
   posts_service:
     image: 127.0.0.1:5000/posts_service:latest
@@ -29,6 +67,9 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+      STACK_NAME: ${SWARM_STACK_NAME}
+      RUN_MODE: ${RUN_MODE}
+
     volumes:
       - ./PostsService/PostsService:/app
     networks:
