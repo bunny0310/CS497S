@@ -1,22 +1,23 @@
 ﻿<Properties StartupConfiguration="{857E2503-FF4C-429D-B878-CF4600C32CA5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Models/ProjectContext.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PostsService/Services/PostService.cs">
     <Files>
-      <File FileName="PostsService/Services/PostService.cs" Line="1" Column="1" IsPinned="True" />
-      <File FileName="PostsService/Services/IPostService.cs" Line="10" Column="8" />
-      <File FileName="Models/Util.cs" Line="12" Column="58" />
-      <File FileName="PostsService/ServiceFactory.cs" Line="21" Column="1" />
-      <File FileName="Models/ProjectContext.cs" Line="1" Column="1" />
+      <File FileName="PostsService/Services/PostService.cs" Line="24" Column="16" IsPinned="True" />
+      <File FileName="PostsService/Services/IPostService.cs" />
+      <File FileName="PostsService/ServiceFactory.cs" Line="1" Column="1" />
+      <File FileName="Models/ProjectContext.cs" Line="18" Column="29" />
+      <File FileName="Models/Util.cs" Line="20" Column="51" />
+      <File FileName="Models/SettingsManager.cs" Line="20" Column="40" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="PostsService" expanded="True">
-            <Node name="Models" expanded="True">
-              <Node name="ProjectContext.cs" selected="True" />
-            </Node>
+            <Node name="Models" expanded="True" />
             <Node name="PostsService" expanded="True">
               <Node name="Controllers" expanded="True" />
-              <Node name="Services" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="PostService.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>

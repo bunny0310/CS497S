@@ -7,12 +7,18 @@ namespace Models
 {
     public static class Util
     {
-        public static string GenerateDatabaseConnectionString()
+        public static string GenerateDatabaseConnectionString(string deploymentMode = null, int shardNumber = -1)
         {
+            deploymentMode = deploymentMode ?? SettingsManager.DEVELOPMENT;
             var host = Environment.GetEnvironmentVariable("MYSQL_HOST");
             var username = Environment.GetEnvironmentVariable("MYSQL_USER");
             var password = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");
             var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
+            if (deploymentMode == SettingsManager.PRODUCTION)
+            {
+                var stackName = Environment.GetEnvironmentVariable("STACK_NAME");
+                host = $"{stackName}_{host}-shard-{shardNumber}";
+            }
             return $"Server={host};User={username};Password={password};Database={db};";
         }
         public static List<Post> GetPostsWithinRadius(

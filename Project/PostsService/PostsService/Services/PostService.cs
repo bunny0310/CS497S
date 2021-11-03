@@ -27,14 +27,17 @@ namespace PostsService.Services
                 {
                     throw new ArgumentNullException(nameof(post));
                 }
+                
+                HashAlgorithm sha = SHA256.Create();
+                post.SecretKey = sha.ComputeHash(BitConverter.GetBytes(post.CreatedAt.Ticks)).ToString(); // FIXME
+                post.CreatedAt = DateTime.UtcNow;
+                post.UpdatedAt = DateTime.UtcNow;
+                int shardNumber = (int)((post.CreatedAt.Ticks % 3) + 1);
+                Console.WriteLine("abc" + shardNumber); // REMOVE LATER
                 using (var context = options != null
-                    ? new ProjectContext(options)
-                    : new ProjectContext())
+                    ? new ProjectContext(options, SettingsManager.RUN_MODE, shardNumber)
+                    : new ProjectContext(SettingsManager.RUN_MODE, shardNumber))
                 {
-                    post.CreatedAt = DateTime.UtcNow;
-                    post.UpdatedAt = DateTime.UtcNow;
-                    HashAlgorithm sha = SHA256.Create();
-                    post.SecretKey = sha.ComputeHash(BitConverter.GetBytes(post.CreatedAt.Ticks)).ToString(); // FIXME
                     context.Add(post);
                     context.SaveChanges();
                     var result = new ExecutionOutcome<Post>()
@@ -85,8 +88,8 @@ namespace PostsService.Services
             try
             {
                 using (var context = options != null
-                    ? new ProjectContext(options)
-                    : new ProjectContext())
+                    ? new ProjectContext(options, SettingsManager.RUN_MODE, 1)
+                    : new ProjectContext(SettingsManager.RUN_MODE, 1))
                 {
                     var dateCurrentMinus7Days = DateTime.UtcNow.AddDays(-7);
                     var list = context.Posts

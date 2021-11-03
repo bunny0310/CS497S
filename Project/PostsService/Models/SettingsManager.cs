@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace PostsService
+namespace Models
 {
     public static class SettingsManager
     {
@@ -17,5 +17,6 @@ namespace PostsService
 
         public readonly static string DEVELOPMENT = "Development";
         public readonly static string PRODUCTION = "Production";
+        public readonly static string RUN_MODE = Environment.GetEnvironmentVariable("RUN_MODE");
     }
 }

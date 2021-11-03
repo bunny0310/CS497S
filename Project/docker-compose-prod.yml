@@ -4,7 +4,7 @@ services:
   database-shard-1:
     image: mysql
     deploy:
-      replicas: 3
+      replicas: 1
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -23,7 +23,7 @@ services:
   database-shard-2:
     image: mysql
     deploy:
-      replicas: 3
+      replicas: 1
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -42,7 +42,7 @@ services:
   database-shard-3:
     image: mysql
     deploy:
-      replicas: 3
+      replicas: 1
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -68,14 +68,14 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
       STACK_NAME: ${SWARM_STACK_NAME}
-      RUN_MODE: ${RUN_MODE}
+      RUN_MODE: Production
 
     volumes:
       - ./PostsService/PostsService:/app
     networks:
       - network
-    expose:
-      - "5000"
+    ports:
+      - "5001:5000"
 
       
 networks:
