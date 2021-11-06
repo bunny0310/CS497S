@@ -16,6 +16,14 @@ export interface Post {
     updatedAt: Date;
 }
 
+export interface PostRequest {
+    description: string;
+    hash: string;
+    latitude: string;
+    longitude: string;
+    publicKey: string;
+} 
+
 export class PostsWebservice {
     getComments = async (id: number) => {
         const response = await axios.get<Comment[]>(`http://localhost/posts_service/api/Posts/Comments/${id}`);
@@ -26,5 +34,8 @@ export class PostsWebservice {
         const response = await axios.get<ExecutionOutcome<Post[]>>(`http://localhost/posts_service/api/Posts/GetTrending`);
         const result = await response.data;
         return result.data;
+    }
+    createPost = async (body: PostRequest) => {
+        const response = await axios.post<PostRequest>(`http://localhost/posts_service/api/Posts/Create`, body);
     }
 }

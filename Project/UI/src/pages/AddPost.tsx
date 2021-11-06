@@ -16,18 +16,23 @@ import "./AddPost.css";
 import React, { FormEventHandler, useState } from 'react';
 import IonInputWrapper from '../components/IonInputWrapper';
 import IonTextareaWrapper from '../components/IonTextareaWrapper';
+import { login } from '../services/authentication-service';
 
 interface AddPostState {
+    description: string;
     isDescriptionValid : boolean;
     isTitleValid : boolean;
+    title: string;
 }
 
 class AddPost extends React.Component<any, AddPostState> {
     constructor (props : any) {
         super(props);
         this.state = {
+            description : "",
             isDescriptionValid : false,
-            isTitleValid : false
+            isTitleValid : false,
+            title : ""
         };
     }
 
@@ -41,9 +46,14 @@ class AddPost extends React.Component<any, AddPostState> {
         } else {
             this.setState({
                 ...this.state,
+                description: val,
                 isDescriptionValid: true
             })
         }
+    }
+
+    submitHandler = () => {
+        login();
     }
 
     titleHandler = (event : CustomEvent) => {
@@ -56,7 +66,8 @@ class AddPost extends React.Component<any, AddPostState> {
         } else {
             this.setState({
                 ...this.state,
-                isTitleValid: true
+                isTitleValid: true,
+                title: val
             })        
         }
     }
@@ -89,7 +100,7 @@ class AddPost extends React.Component<any, AddPostState> {
                     </IonCardContent>
                     <IonFooter>
                         <IonToolbar>
-                            <IonButton color={"secondary"} disabled={!isFormValid} expand={"block"} fill={"solid"}>Add Post</IonButton>
+                            <IonButton color={"secondary"} disabled={!isFormValid} expand={"block"} fill={"solid"} onClick={this.submitHandler}>Add Post</IonButton>
                         </IonToolbar>
                     </IonFooter>
                 </IonCard>

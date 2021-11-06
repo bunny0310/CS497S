@@ -20,7 +20,7 @@ import axios from  "axios";
 }
 
 export const createKey = (secret = "") => {
-	const key = generateRSAKey(secret !== "" ? secret : crypto.randomBytes(256).toString('ascii'), 2048);
+	const key = generateRSAKey(secret !== "" ? secret : randomBytes(256).toString('ascii'), 2048);
 	const pubKey = publicKeyString(key);
     window.localStorage.setItem("locchat-pubKey", pubKey);
     window.localStorage.setItem("locchat-key", key);
@@ -28,11 +28,11 @@ export const createKey = (secret = "") => {
 
 export const login = () => {
     const storage = window.localStorage;
-    const pubKey = localStorage.getItem("locchat-pubKey");
-    const key = localStorage.getItem("locchat-key");
-	if (!pubKey) {
-        return false;
-    }
+    const pubKey = storage.getItem("locchat-pubKey");
+	if(pubKey == null){
+		createKey();
+	}
+    const key = storage.getItem("locchat-key");
 	// console.log('initiating login with server by sending public key');
 	var response = axios.get(`http://localhost/authentication_service/login`, {params: {pubKey: pubKey}})
 		.then(result => {
