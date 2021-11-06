@@ -4,6 +4,7 @@ services:
   api_gateway:
     build:
       context: APIGateway
+    container_name: project_gateway
     restart: always
     networks:
       - network
@@ -14,6 +15,7 @@ services:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    container_name: project_database
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -31,6 +33,7 @@ services:
     build:
       context: PostsService
       dockerfile: Dockerfile-Posts
+    container_name: project_posts_service
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
@@ -48,6 +51,7 @@ services:
     build:
       context: PostsService
       dockerfile: Dockerfile-Comments
+    container_name: project_comments_service
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
@@ -64,6 +68,7 @@ services:
   votes_service:
     build:
       context: VotesService
+    container_name: project_votes_service
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
@@ -80,6 +85,7 @@ services:
   authentication_service:
     build:
       context: AuthenticationService
+    container_name: project_authentication_service
     restart: always
     volumes:
       - ./AuthenticationService:/usr/src/app
