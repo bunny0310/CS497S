@@ -19,6 +19,7 @@ import './theme/variables.css';
 import './App.css';
 import AddPost from './pages/AddPost';
 import { initializeServices } from './services/registerServices';
+import { generateOneTimes } from './services/authentication-service';
 
 const App: React.FC = () => {
   initializeServices();
