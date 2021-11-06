@@ -1,15 +1,8 @@
-import { IonInput, IonLabel, IonText } from "@ionic/react";
+import { IonInput, IonLabel, IonText, IonTextarea } from "@ionic/react";
 import React from "react";
-import "./FieldStyles.css";
+import { InputProps } from "./IonInputWrapper";
 
-export interface InputProps {
-    isValid: boolean,
-    onChange: (event: CustomEvent) => any
-    placeholder: string,
-    validationMessage?: string
-}
-
-const IonInputWrapper = (props: InputProps) => {
+const IonTextareaWrapper = (props: InputProps) => {
     const {isValid, onChange, placeholder, validationMessage} = props;
     const [showValidationError, setShowValidationError] = React.useState<boolean>(false);
     const [fieldClassName, setFieldClassName] = React.useState<string>("field-normal");
@@ -38,9 +31,9 @@ const IonInputWrapper = (props: InputProps) => {
     return (
     <>
         {showValidationError && !isValid && validationMessage && <IonText color={"danger"}><h6>{validationMessage}</h6></IonText>}
-        <IonInput className={fieldClassName} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonInput>
+        <IonTextarea className={fieldClassName} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonTextarea>
     </>
     );
 }
 
-export default IonInputWrapper;
+export default IonTextareaWrapper;

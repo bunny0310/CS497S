@@ -15,6 +15,7 @@ import {
 import "./AddPost.css";
 import React, { FormEventHandler, useState } from 'react';
 import IonInputWrapper from '../components/IonInputWrapper';
+import IonTextareaWrapper from '../components/IonTextareaWrapper';
 
 interface AddPostState {
     isDescriptionValid : boolean;
@@ -41,7 +42,7 @@ class AddPost extends React.Component<any, AddPostState> {
             this.setState({
                 ...this.state,
                 isDescriptionValid: true
-            })        
+            })
         }
     }
 
@@ -79,8 +80,12 @@ class AddPost extends React.Component<any, AddPostState> {
                         </IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent>
-                        <IonTextarea onIonChange={this.descriptionHandler} placeholder="Your Description Here" style={{"border": "0.2px solid"}}>
-                        </IonTextarea>
+                        <IonTextareaWrapper 
+                            isValid = {this.state.isDescriptionValid}
+                            onChange = {this.descriptionHandler}
+                            placeholder="Your Description Here"
+                            validationMessage="Please enter a valid description"
+                        ></IonTextareaWrapper>
                     </IonCardContent>
                     <IonFooter>
                         <IonToolbar>
