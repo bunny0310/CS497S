@@ -61,19 +61,14 @@ class AddPost extends React.Component<any, AddPostState> {
             isAdding: true
         });   
         login()
-        .then(() => {
-            this.setState({
-                ...this.state,
-                isAdding: false
-            });
-        })
         .catch((err) => {
-            this.setState({
-                ...this.state,
-                isAdding: false
-            });
             clearMemory();
             console.log(err);
+        });
+
+        this.setState({
+            ...this.state,
+            isAdding: false
         });
     }
 

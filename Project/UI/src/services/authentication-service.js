@@ -87,3 +87,8 @@ export const clearMemory = () => {
     storage.removeItem(hashesName);
     storage.removeItem(pubKeyName);
 }
+
+export const getPublicKey = () => {
+    const storage = window.localStorage;
+    return storage.getItem(pubKeyName);
+}

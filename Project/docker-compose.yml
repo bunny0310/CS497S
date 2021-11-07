@@ -81,8 +81,8 @@ services:
     build:
       context: AuthenticationService
     restart: always
-    volumes:
-      - ./AuthenticationService:/usr/src/app
+    # volumes:
+    #   - ./AuthenticationService:/usr/src/app
     networks:
       - network
     expose:

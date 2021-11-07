@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router';
-import { IonApp, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar } from '@ionic/react';
+import { IonApp, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { location, trendingUp, create} from 'ionicons/icons';
 import Nearby from './pages/Nearby';
@@ -19,7 +19,7 @@ import './theme/variables.css';
 import './App.css';
 import AddPost from './pages/AddPost';
 import { initializeServices } from './services/registerServices';
-import { generateOneTimes } from './services/authentication-service';
+import { generateOneTimes, getPublicKey, isLoggedIn } from './services/authentication-service';
 
 const App: React.FC = () => {
   initializeServices();
@@ -30,6 +30,13 @@ const App: React.FC = () => {
         <IonTitle>Loc Chat</IonTitle>
         <IonButtons slot="start">
           <img src={`${process.env.PUBLIC_URL}/assets/icon/LocChat.png`} className="icon" />
+        </IonButtons>
+        <IonButtons slot="end">
+          {
+            isLoggedIn()
+            ? <IonText>Hello User {getPublicKey()!.substring(0,5)}</IonText> 
+            : <IonButton color="light" size="large">Log In</IonButton>
+          }
         </IonButtons>
       </IonToolbar>
     </IonHeader>
