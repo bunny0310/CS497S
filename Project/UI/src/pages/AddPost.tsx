@@ -9,17 +9,19 @@ import {
     IonText,
     IonFooter,
     IonToolbar,
-    IonButton
+    IonButton,
+    IonSpinner
     }
     from '@ionic/react';
 import "./AddPost.css";
 import React, { FormEventHandler, useState } from 'react';
 import IonInputWrapper from '../components/IonInputWrapper';
 import IonTextareaWrapper from '../components/IonTextareaWrapper';
-import { login } from '../services/authentication-service';
+import { clearMemory, login } from '../services/authentication-service';
 
 interface AddPostState {
     description: string;
+    isAdding: boolean;
     isDescriptionValid : boolean;
     isTitleValid : boolean;
     title: string;
@@ -30,6 +32,7 @@ class AddPost extends React.Component<any, AddPostState> {
         super(props);
         this.state = {
             description : "",
+            isAdding: false,
             isDescriptionValid : false,
             isTitleValid : false,
             title : ""
@@ -53,7 +56,25 @@ class AddPost extends React.Component<any, AddPostState> {
     }
 
     submitHandler = () => {
-        login();
+        this.setState({
+            ...this.state,
+            isAdding: true
+        });   
+        login()
+        .then(() => {
+            this.setState({
+                ...this.state,
+                isAdding: false
+            });
+        })
+        .catch((err) => {
+            this.setState({
+                ...this.state,
+                isAdding: false
+            });
+            clearMemory();
+            console.log(err);
+        });
     }
 
     titleHandler = (event : CustomEvent) => {
@@ -77,7 +98,8 @@ class AddPost extends React.Component<any, AddPostState> {
         return (
             <IonContent>
                 <IonText color="dark" className={"centered"}>
-                    <h2>Add Post</h2>
+                
+                    <h2>Add Post {this.state.isAdding ? "true" : "false"}</h2> {this.state.isAdding && <h1>Cool</h1>}
                 </IonText>
                 <IonCard>
                     <IonCardHeader>

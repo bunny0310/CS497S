@@ -6,6 +6,8 @@ import {
 import axios from  "axios";
  import {randomBytes, createHash} from "crypto";
 
+const pubKeyName = "locchat-pubKey";
+const hashesName = "locchat-hashes";
  export const generateOneTimes = () => {
 	let oneTimes = [];
 	let hash = "";
@@ -22,50 +24,37 @@ import axios from  "axios";
 export const createKey = (secret = "") => {
 	const key = generateRSAKey(secret !== "" ? secret : randomBytes(256).toString('ascii'), 2048);
 	const pubKey = publicKeyString(key);
-    window.localStorage.setItem("locchat-pubKey", pubKey);
-    window.localStorage.setItem("locchat-key", key);
+    window.localStorage.setItem(pubKeyName, pubKey);
+    return key;
 }
 
-export const login = () => {
+export const login = async () => {
+    if (isLoggedIn()) {
+        return;
+    }
     const storage = window.localStorage;
-    const pubKey = storage.getItem("locchat-pubKey");
-	if(pubKey == null){
-		createKey();
-	}
-    const key = storage.getItem("locchat-key");
+    const key = createKey();
+    const pubKey = storage.getItem(pubKeyName);
 	// console.log('initiating login with server by sending public key');
-	var response = axios.get(`http://localhost/authentication_service/login`, {params: {pubKey: pubKey}})
-		.then(result => {
-			// console.log('received encrypted random string');
-			var EncrRandString = result.data.EncrRandString;
-			// console.log('Decrypting encrypted random string... this will prove that I own the public key');
-			var decrypt_result = decrypt(EncrRandString, key);
-			var rString;
-			if (decrypt_result) {
-				console.log('decrypted encrypted random string');
-				rString = decrypt_result.plaintext;
-			}else {
-                return false;
-			}
-			// console.log('Hashing a cryptographically random string 50 times, and sending the 50th one to the server along with my proof');
-			generateOneTimes();
-            const hashes = storage.getItem('locchat-hashes');
-            hashes = JSON.parse(hashes);
-            const arr = hashes["hashes"];
-            const hash = arr.pop();
-			var response2 = axios.get(`http://localhost/authentication_service/prove`, {params: {pubKey: pubKey, proof: rString, hash: hash}})
-				.then(result2 => {
-					// console.log('Server accepted proof of identity and saved the hash corresponding to the chain of one-time passwords');
-					return true;
-				}).catch(error => {
-					// console.log(`proof ${error}`);
-					return false;
-				});
-		}).catch(error => {
-			// console.log(`verification ${error}`);
-			return false;
-		});
-        return false;
+	const result = await axios.get(`http://localhost/authentication_service/login`, {params: {pubKey: pubKey}})
+    // console.log('received encrypted random string');
+    var EncrRandString = result.data.EncrRandString;
+    // console.log('Decrypting encrypted random string... this will prove that I own the public key');
+    var decrypt_result = decrypt(EncrRandString, key);
+    var rString;
+    if (decrypt_result) {
+        // console.log('decrypted encrypted random string');
+        rString = decrypt_result.plaintext;
+    }else {
+        throw  new Error("Failed to decrypt the encrypted string");
+    }
+    // console.log('Hashing a cryptographically random string 50 times, and sending the 50th one to the server along with my proof');
+    generateOneTimes();
+    let hashes = storage.getItem(hashesName);
+    hashes = JSON.parse(hashes);
+    const arr = hashes["hashes"];
+    const hash = arr.pop();
+    await axios.get(`http://localhost/authentication_service/prove`, {params: {pubKey: pubKey, proof: rString, hash: hash}})
 }
 
 export const auth = () => {
@@ -73,8 +62,8 @@ export const auth = () => {
         return false;
     }
     const storage = window.localStorage;
-    const pubKey = storage.getItem("locchat-pubKey");
-    const hashes = storage.getItem('locchat-hashes');
+    const pubKey = storage.getItem(pubKeyName);
+    const hashes = storage.getItem(hashesName);
     hashes = JSON.parse(hashes);
     const arr = hashes["hashes"];
     const hash = arr.pop();
@@ -90,5 +79,11 @@ export const auth = () => {
 
 export const isLoggedIn = () => {
     const storage = window.localStorage;
-    return storage.getItem("locchat-pubKey") !== null && storage.getItem("locchat-key") !== null && storage.getItem("locchat-hashes") !== null 
+    return storage.getItem(pubKeyName) !== null && storage.getItem(hashesName) !== null 
+}
+
+export const clearMemory = () => {
+    const storage = window.localStorage;
+    storage.removeItem(hashesName);
+    storage.removeItem(pubKeyName);
 }
