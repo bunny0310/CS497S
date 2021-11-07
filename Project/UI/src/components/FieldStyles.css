@@ -9,3 +9,6 @@
 .field-normal {
     border: 0.3px solid black;
 }
+.adjustSpace {
+    margin-bottom: 10px;
+}

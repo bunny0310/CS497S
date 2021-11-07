@@ -38,7 +38,7 @@ const IonInputWrapper = (props: InputProps) => {
     return (
     <>
         {showValidationError && !isValid && validationMessage && <IonText color={"danger"}><h6>{validationMessage}</h6></IonText>}
-        <IonInput className={fieldClassName} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonInput>
+        <IonInput className={`adjustSpace ${fieldClassName}`} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonInput>
     </>
     );
 }
