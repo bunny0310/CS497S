@@ -1,8 +1,9 @@
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonItem, IonList, IonContent, IonTitle, IonSpinner, IonProgressBar } from "@ionic/react";
-import { thumbsUpSharp, chatbubblesSharp } from "ionicons/icons";
+import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonItem, IonList, IonContent, IonTitle, IonSpinner, IonProgressBar, IonText } from "@ionic/react";
+import { thumbsUpSharp, chatbubblesSharp, chatbubbleOutline } from "ionicons/icons";
 import React from "react";
 import { Comment, PostsWebservice } from "../services/posts-webservice";
 import { wire } from "../services/serviceInjection";
+import moment from 'moment';
 
 interface PostCardProps {
     id: number;
@@ -79,7 +80,7 @@ class PostCard extends React.Component<PostCardPropsWithServices, PostCardState>
                             });
                         }}
                     >
-                        <IonIcon icon={chatbubblesSharp} color={"secondary"}></IonIcon>
+                        <IonIcon icon={this.state.showComments ? chatbubblesSharp : chatbubbleOutline} color={"secondary"}></IonIcon>
                     </IonButton>
                 </IonButtons>
             </IonToolbar>
@@ -94,8 +95,11 @@ class PostCard extends React.Component<PostCardPropsWithServices, PostCardState>
                             <>
                                 <IonCard key={comment.id}>
                                     <IonCardHeader>
-                                        <h6><b>Posted by: </b> {comment.secretKey.substring(0, 5)}</h6>
+                                        <IonCardSubtitle>{moment(comment.createdAt).format('MMMM DD, YYYY')}</IonCardSubtitle>
                                     </IonCardHeader>
+                                    <IonCardContent>
+                                        <IonText color="dark">{comment.value}</IonText>
+                                    </IonCardContent>
                                 </IonCard>
                             </>
                         )
