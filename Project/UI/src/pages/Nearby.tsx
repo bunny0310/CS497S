@@ -41,7 +41,6 @@ class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
     }
     render() {
         const posts: Post[] = this.state.posts;
-
         return (
             <IonContent>
                 {

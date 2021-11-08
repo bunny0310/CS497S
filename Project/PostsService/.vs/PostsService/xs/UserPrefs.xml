@@ -1,26 +1,26 @@
 ﻿<Properties StartupConfiguration="{857E2503-FF4C-429D-B878-CF4600C32CA5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="CommentsService/Services/CommentService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CommentsService/Controllers/CommentsController.cs">
     <Files>
-      <File FileName="CommentsService/Controllers/CommentsController.cs" Line="20" Column="25" />
-      <File FileName="CommentsService/Services/ICommentService.cs" Line="9" Column="6" />
-      <File FileName="CommentsService/Startup.cs" Line="1" Column="1" />
-      <File FileName="CommentsService/Program.cs" Line="28" Column="6" />
-      <File FileName="PostsService/Program.cs" Line="7" Column="1" />
-      <File FileName="CommentsService/appsettings.json" Line="1" Column="1" />
-      <File FileName="CommentsService/Services/CommentService.cs" Line="33" Column="53" />
+      <File FileName="CommentsService/Startup.cs" Line="11" Column="36" />
+      <File FileName="CommentsService/Controllers/CommentsController.cs" Line="37" Column="22" />
+      <File FileName="Models/Auth/AuthService.cs" Line="15" Column="145" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="PostsService" expanded="True">
             <Node name="CommentsService" expanded="True">
-              <Node name="Controllers" expanded="True" />
-              <Node name="ResultTypes" expanded="True" />
-              <Node name="Services" expanded="True">
-                <Node name="CommentService.cs" selected="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="CommentsController.cs" selected="True" />
               </Node>
+              <Node name="Models" expanded="True" />
             </Node>
-            <Node name="PostsService" expanded="True" />
+            <Node name="Models" expanded="True">
+              <Node name="Auth" expanded="True" />
+            </Node>
+            <Node name="PostsService" expanded="True">
+              <Node name="Models" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
