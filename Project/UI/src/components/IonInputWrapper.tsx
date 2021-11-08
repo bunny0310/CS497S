@@ -3,6 +3,7 @@ import React from "react";
 import "./FieldStyles.css";
 
 export interface InputProps {
+    disabled? : boolean,
     isValid: boolean,
     onChange: (event: CustomEvent) => any
     placeholder: string,
@@ -10,7 +11,7 @@ export interface InputProps {
 }
 
 const IonInputWrapper = (props: InputProps) => {
-    const {isValid, onChange, placeholder, validationMessage} = props;
+    const {disabled, isValid, onChange, placeholder, validationMessage} = props;
     const [showValidationError, setShowValidationError] = React.useState<boolean>(false);
     const [fieldClassName, setFieldClassName] = React.useState<string>("field-normal");
 
@@ -38,7 +39,7 @@ const IonInputWrapper = (props: InputProps) => {
     return (
     <>
         {showValidationError && !isValid && validationMessage && <IonText color={"danger"}><h6>{validationMessage}</h6></IonText>}
-        <IonInput className={`adjustSpace ${fieldClassName}`} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonInput>
+        <IonInput className={`adjustSpace ${fieldClassName}`} disabled={disabled ?? false} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonInput>
     </>
     );
 }

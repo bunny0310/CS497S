@@ -21,22 +21,24 @@ const hashesName = "locchat-hashes";
     myStorage.setItem("locchat-hashes", JSON.stringify(obj));
 }
 
-export const createKey = (secret = "") => {
-	const key = generateRSAKey(secret !== "" ? secret : randomBytes(256).toString('ascii'), 2048);
-	const pubKey = publicKeyString(key);
-    window.localStorage.setItem(pubKeyName, pubKey);
-    return key;
+export const createKey =  async (secret = "") => {
+    return new Promise((resolve) => {
+        const key =  generateRSAKey(secret !== "" ? secret : randomBytes(256).toString('ascii'), 2048);
+        const pubKey = publicKeyString(key);
+        window.localStorage.setItem(pubKeyName, pubKey);
+        resolve(key);
+    });
 }
 
 export const login = async () => {
     if (isLoggedIn()) {
-        return;
+        return true;
     }
     const storage = window.localStorage;
-    const key = createKey();
+    const key = await createKey();
     const pubKey = storage.getItem(pubKeyName);
-	// console.log('initiating login with server by sending public key');
-	const result = await axios.get(`http://localhost/authentication_service/login`, {params: {pubKey: pubKey}})
+    // console.log('initiating login with server by sending public key');
+    const result =  await axios.get(`http://localhost/authentication_service/login`, {params: {pubKey: pubKey}});
     // console.log('received encrypted random string');
     var EncrRandString = result.data.EncrRandString;
     // console.log('Decrypting encrypted random string... this will prove that I own the public key');
@@ -46,7 +48,7 @@ export const login = async () => {
         // console.log('decrypted encrypted random string');
         rString = decrypt_result.plaintext;
     }else {
-        throw  new Error("Failed to decrypt the encrypted string");
+        throw new Error("Cannot decrypt the string");
     }
     // console.log('Hashing a cryptographically random string 50 times, and sending the 50th one to the server along with my proof');
     generateOneTimes();
@@ -54,7 +56,14 @@ export const login = async () => {
     hashes = JSON.parse(hashes);
     const arr = hashes["hashes"];
     const hash = arr.pop();
-    await axios.get(`http://localhost/authentication_service/prove`, {params: {pubKey: pubKey, proof: rString, hash: hash}})
+    try {
+        await axios.get(`http://localhost/authentication_service/prove`, {params: {pubKey: pubKey, proof: rString, hash: hash}});
+    }
+    catch (err) {
+        console.log(err);
+        throw new Error(err);
+    }
+     return true;
 }
 
 export const auth = () => {

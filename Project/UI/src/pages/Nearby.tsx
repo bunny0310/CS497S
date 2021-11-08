@@ -22,17 +22,20 @@ class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
     }
     componentDidMount() {
         this.setState({...this.state, loading: true});
+        this.setState({
+            ...this.state,
+            loading: true
+        })
         this.fetchPosts();
-        this.setState({...this.state, loading: false});
     }
 
     fetchPosts = () => {
         this.props.postsWebService
         .getTrendingPosts()
         .then((data) => {
-            console.log(data);
             this.setState({
-                posts: data
+                posts: data,
+                loading: false
             });
         });
     }
@@ -44,7 +47,7 @@ class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
                 {
                     !this.state.loading
                     ? posts.map((post) => {
-                        return <PostCard key={post.id} description={post.description} votes={post.votes}></PostCard>;
+                        return <PostCard key={post.id} id={post.id} description={post.description} votes={post.votes}></PostCard>;
                     })
                     : 
                     <>

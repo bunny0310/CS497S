@@ -21,6 +21,8 @@ import IonInputWrapper from '../components/IonInputWrapper';
 import IonTextareaWrapper from '../components/IonTextareaWrapper';
 import { clearMemory, login } from '../services/authentication-service';
 import {RouteComponentProps} from 'react-router-dom';
+import axios from 'axios';
+import { ExecutionOutcome, Post } from '../services/posts-webservice';
 
 interface LoginProps extends RouteComponentProps{
     loginStateHandler: () => void;
@@ -84,21 +86,13 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 
     registerHandler = () => {
-        this.setState({
-            ...this.state,
-            isLoggingIn: true
-        });  
-
         login()
-        .then(() => {
+        .then(status => {
             this.setState({
                 ...this.state,
+                isLoggingIn: false,
                 showLogInToast: true
             })
-        })
-        .catch((err) => {
-            clearMemory();
-            console.log(err);
         });
     }
 
@@ -125,12 +119,14 @@ class Login extends React.Component<LoginProps, LoginState> {
                 <IonCard>
                     <IonCardContent>
                         <IonInputWrapper 
+                            disabled = {this.state.isLoggingIn}
                             isValid = {this.state.isPublicKeyValid} 
                             onChange={this.publicKeyHandler} 
                             placeholder="Public Key"
                             validationMessage="Please enter a valid public key."
                         ></IonInputWrapper>
-                        <IonInputWrapper 
+                        <IonInputWrapper
+                            disabled = {this.state.isLoggingIn} 
                             isValid = {this.state.isPrivateKeyValid}
                             onChange = {this.privateKeyHandler}
                             placeholder="Private Key"
@@ -139,8 +135,21 @@ class Login extends React.Component<LoginProps, LoginState> {
                     </IonCardContent>
                     <IonFooter>
                         <IonToolbar>
-                            <IonButton color={"secondary"} disabled={!isFormValid} expand={"block"} fill={"solid"} onClick={this.submitHandler}>Login</IonButton>
-                            <IonButton color={"light"} expand={"block"} fill={"solid"} onClick={this.registerHandler}>Register</IonButton>
+                            <IonButton color={"secondary"} disabled={!isFormValid || this.state.isLoggingIn} expand={"block"} fill={"solid"} onClick={this.submitHandler}>Login</IonButton>
+                            <IonButton color={this.state.isLoggingIn ? "dark" : "light"} disabled = {this.state.isLoggingIn} expand={"block"} fill={"solid"} onClick={() => {
+                                this.setState({
+                                    ...this.state,
+                                    isLoggingIn: true
+                                });
+                                this.registerHandler();
+                                }}>
+                                    {
+                                        this.state.isLoggingIn 
+                                        ? "Registering... " 
+                                        : "Register"
+                                    }
+                                    {this.state.isLoggingIn && <IonSpinner></IonSpinner>}
+                            </IonButton>
                         </IonToolbar>
                     </IonFooter>
                 </IonCard>

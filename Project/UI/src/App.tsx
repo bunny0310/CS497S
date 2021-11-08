@@ -19,9 +19,9 @@ import './theme/variables.css';
 import './App.css';
 import AddPost from './pages/AddPost';
 import { initializeServices } from './services/registerServices';
-import { generateOneTimes, getPublicKey, isLoggedIn } from './services/authentication-service';
+import { generateOneTimes, getPublicKey, isLoggedIn } from './services/authentication-service.js';
 import Login from './pages/Login';
-import { clearMemory } from './services/authentication-service';
+import { clearMemory } from './services/authentication-service.js';
 import React from 'react';
 
 const App: React.FC = () => {
@@ -64,7 +64,11 @@ const App: React.FC = () => {
               <Redirect exact path="/tabs" to="/tabs/nearby" />
               <Redirect exact path="/" to="/tabs/nearby" />
               <Route path="/tabs/nearby" render={() => <Nearby />} exact={true} />
-              <Route path="/tabs/create" render={() => <AddPost />} exact={true} />
+              {
+                !loginState
+                ? <Redirect exact path="/tabs/create" to="/login" />
+                : <Route path="/tabs/create" render={() => <AddPost />} exact={true} />
+              }
               {
                 loginState
                 ? <Redirect exact path="/login" to="/tabs/nearby" />

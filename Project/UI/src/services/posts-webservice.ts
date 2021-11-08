@@ -1,6 +1,6 @@
 import axios from "axios";
 
-interface ExecutionOutcome<T> {
+export interface ExecutionOutcome<T> {
     code: number;
     data: T;
     message: string;
@@ -16,6 +16,15 @@ export interface Post {
     updatedAt: Date;
 }
 
+export interface Comment {
+    id: number,
+    postId: number,
+    value: string,
+    secretKey: string,
+    createdAt: Date,
+    updatedAt: Date
+}
+
 export interface PostRequest {
     description: string;
     hash: string;
@@ -26,9 +35,9 @@ export interface PostRequest {
 
 export class PostsWebservice {
     getComments = async (id: number) => {
-        const response = await axios.get<Comment[]>(`http://localhost/posts_service/api/Posts/Comments/${id}`);
-        const comments = response.data;
-        return comments;
+        const response = await axios.get<ExecutionOutcome<Comment[]>>(`http://localhost/comments_service/api/Comments/Comments/${id}`);
+        const result = await response.data;
+        return result.data;
     }
     getTrendingPosts = async () => {
         const response = await axios.get<ExecutionOutcome<Post[]>>(`http://localhost/posts_service/api/Posts/GetTrending`);

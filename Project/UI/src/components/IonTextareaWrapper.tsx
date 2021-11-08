@@ -3,7 +3,7 @@ import React from "react";
 import { InputProps } from "./IonInputWrapper";
 
 const IonTextareaWrapper = (props: InputProps) => {
-    const {isValid, onChange, placeholder, validationMessage} = props;
+    const {disabled, isValid, onChange, placeholder, validationMessage} = props;
     const [showValidationError, setShowValidationError] = React.useState<boolean>(false);
     const [fieldClassName, setFieldClassName] = React.useState<string>("field-normal");
 
@@ -31,7 +31,7 @@ const IonTextareaWrapper = (props: InputProps) => {
     return (
     <>
         {showValidationError && !isValid && validationMessage && <IonText color={"danger"}><h6>{validationMessage}</h6></IonText>}
-        <IonTextarea className={fieldClassName} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonTextarea>
+        <IonTextarea className={fieldClassName} disabled = {disabled ?? false} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonTextarea>
     </>
     );
 }
