@@ -19,4 +19,11 @@ CREATE TABLE `Comment` (
   `UpdatedAt` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE `UserVoteJoins` (
+  `Id` int PRIMARY KEY AUTO_INCREMENT,
+  `ObjectId` int,
+  `Type` varchar(50),
+  `PublicKey` text
+);
+
 ALTER TABLE `Comment` ADD FOREIGN KEY (`PostId`) REFERENCES `Post` (`Id`);

@@ -23,6 +23,7 @@ import { generateOneTimes, getPublicKey, isLoggedIn } from './services/authentic
 import Login from './pages/Login';
 import { clearMemory } from './services/authentication-service.js';
 import React from 'react';
+import { LoggedInContext } from './components/LoggedInContext';
 
 const App: React.FC = () => {
   initializeServices();
@@ -63,7 +64,9 @@ const App: React.FC = () => {
             <IonRouterOutlet>
               <Redirect exact path="/tabs" to="/tabs/nearby" />
               <Redirect exact path="/" to="/tabs/nearby" />
-              <Route path="/tabs/nearby" render={() => <Nearby />} exact={true} />
+              <Route path="/tabs/nearby" render={(props) => <LoggedInContext.Provider value={loginState}>
+                                                              <Nearby {...props}/>
+                                                            </LoggedInContext.Provider>} exact={true} />
               {
                 !loginState
                 ? <Redirect exact path="/tabs/create" to="/login" />

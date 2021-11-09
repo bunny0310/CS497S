@@ -6,8 +6,8 @@ import {
 import axios from  "axios";
  import {randomBytes, createHash} from "crypto";
 
-const pubKeyName = "locchat-pubKey";
-const hashesName = "locchat-hashes";
+export const pubKeyName = "locchat-pubKey";
+export const hashesName = "locchat-hashes";
  export const generateOneTimes = () => {
 	let oneTimes = [];
 	let hash = "";

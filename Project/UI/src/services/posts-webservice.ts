@@ -1,4 +1,5 @@
 import axios from "axios";
+import { pubKeyName } from "./authentication-service";
 
 export interface ExecutionOutcome<T> {
     code: number;
@@ -7,6 +8,7 @@ export interface ExecutionOutcome<T> {
 }
 export interface Post {
     id: number;
+    isVoted: boolean;
     description: string;
     latitude: number;
     longitude: number;
@@ -33,6 +35,23 @@ export interface PostRequest {
     publicKey: string;
 } 
 
+export enum VoteType {
+    Comment,
+    Post
+}
+export interface VoteRequest {
+    id?: number,
+    objectIds?: number[],
+    pubKey: string,
+    type: string
+}
+
+export interface VoteResponse {
+    data?: Array<number>,
+    msg: string,
+    isVoted?: boolean
+}
+
 export class PostsWebservice {
     getComments = async (id: number) => {
         const response = await axios.get<ExecutionOutcome<Comment[]>>(`http://localhost/comments_service/api/Comments/Comments/${id}`);
@@ -46,5 +65,25 @@ export class PostsWebservice {
     }
     createPost = async (body: PostRequest) => {
         const response = await axios.post<PostRequest>(`http://localhost/posts_service/api/Posts/Create`, body);
+    }
+    upvote = async (id: number, type: VoteType) => {
+        const voteRequest : VoteRequest= {
+            id,
+            pubKey: window.localStorage.getItem(pubKeyName) ?? '',
+            type: VoteType[type]
+        }
+        const response = await axios.post<VoteRequest, VoteResponse>('http://localhost/votes_service/vote', voteRequest);
+        return response.msg;
+    }
+
+    getVoteStatus = async (ids: number[], type: VoteType) => {
+        const voteRequest : VoteRequest= {
+            objectIds: ids,
+            pubKey: window.localStorage.getItem(pubKeyName) ?? '',
+            type: VoteType[type]
+        }
+        const response = await axios.post<any>('http://localhost/votes_service/isVoted', voteRequest);
+        const result = await response.data!;
+        return result.data;   
     }
 }

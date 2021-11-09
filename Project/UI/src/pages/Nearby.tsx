@@ -1,10 +1,11 @@
 import { IonContent, IonSpinner } from '@ionic/react';
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import PostCard from '../components/PostCard';
-import { Post, PostsWebservice } from '../services/posts-webservice';
+import { Post, PostsWebservice, VoteType } from '../services/posts-webservice';
 import { wire } from '../services/serviceInjection';
 
-interface NearbyProps {};
+interface NearbyProps extends RouteComponentProps{};
 interface NearbyPropsWithServices extends NearbyProps {
     postsWebService: PostsWebservice;
 }
@@ -32,21 +33,36 @@ class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
     fetchPosts = () => {
         this.props.postsWebService
         .getTrendingPosts()
-        .then((data) => {
-            this.setState({
-                posts: data,
-                loading: false
-            });
+        .then((posts) => {
+            // this.setState({
+            //     posts: posts,
+            //     loading: false
+            // });
+            this.props.postsWebService
+            .getVoteStatus(posts.map(post => post.id), VoteType.Post)
+            .then(filteredPostIds => {
+               posts = posts.map(post => {
+                   const mappedPost : Post = {
+                       ...post,
+                       isVoted: filteredPostIds.includes(post.id)
+                   }
+                   return mappedPost
+               })
+                this.setState({
+                    posts,
+                    loading: false
+                });
+            })
         });
     }
     render() {
-        const posts: Post[] = this.state.posts;
+        const posts: Post[] = this.state.posts
         return (
             <IonContent>
                 {
                     !this.state.loading
                     ? posts.map((post) => {
-                        return <PostCard key={post.id} id={post.id} description={post.description} votes={post.votes}></PostCard>;
+                        return <PostCard {...this.props} description={post.description} id={post.id} isVoted={post.isVoted} key={post.id} votes={post.votes}></PostCard>;
                     })
                     : 
                     <>

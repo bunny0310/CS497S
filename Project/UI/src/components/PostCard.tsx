@@ -1,12 +1,15 @@
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonItem, IonList, IonContent, IonTitle, IonSpinner, IonProgressBar, IonText } from "@ionic/react";
-import { thumbsUpSharp, chatbubblesSharp, chatbubbleOutline } from "ionicons/icons";
+import { thumbsUpSharp, thumbsUpOutline, chatbubblesSharp, chatbubbleOutline } from "ionicons/icons";
 import React from "react";
-import { Comment, PostsWebservice } from "../services/posts-webservice";
+import { Comment, PostsWebservice, VoteType } from "../services/posts-webservice";
 import { wire } from "../services/serviceInjection";
 import moment from 'moment';
+import { RouteComponentProps } from "react-router";
+import { LoggedInContext } from "./LoggedInContext";
 
-interface PostCardProps {
+interface PostCardProps extends RouteComponentProps{
     id: number;
+    isVoted: boolean;
     description: string;
     votes: number;
 };
@@ -16,21 +19,25 @@ interface PostCardPropsWithServices extends PostCardProps {
 };
 
 interface PostCardState {
+    isVoted: boolean;
     comments: Comment[];
     commentsLoading: boolean;
     showComments: boolean;
+    votes: number;
 }
 
 class PostCard extends React.Component<PostCardPropsWithServices, PostCardState> {
-    constructor(props: any) {
+    constructor(props: PostCardPropsWithServices) {
         super(props);
         this.state = {
             comments: [],
             commentsLoading: false,
-            showComments: false
+            showComments: false,
+            votes: props.votes,
+            isVoted: props.isVoted
         };
     }
-
+    
     loadComments = async (postId: number) => {
         this.props.postsWebService.getComments(postId)
         .then(comments => {
@@ -49,6 +56,7 @@ class PostCard extends React.Component<PostCardPropsWithServices, PostCardState>
             })  
         })
     }
+    static contextType = LoggedInContext;
     render() {
         const comments: Comment[] = this.state.comments;
         return (
@@ -63,9 +71,30 @@ class PostCard extends React.Component<PostCardPropsWithServices, PostCardState>
             <IonFooter>
             <IonToolbar>
                 <IonButtons slot="start">
-                    <IonButton>
-                        <IonIcon slot="start" icon={thumbsUpSharp} color={"secondary"}/>
-                        <IonLabel>{this.props.votes}</IonLabel>
+                    <IonButton
+                        onClick={() => {
+                            if (!this.context) {
+                                this.props.history.push("/login");
+                                return;
+                            }
+                            const votes = this.state.votes;
+                            this.props.postsWebService.upvote(this.props.id, VoteType.Post)
+                            .then(resp => {
+                                this.setState({
+                                    ...this.state,
+                                    isVoted: true,
+                                    votes: votes + 1
+                                })
+                            })
+                        }}
+                    >
+                        <IonIcon slot="start" icon={this.context
+                            ? this.state.isVoted 
+                                ? thumbsUpSharp 
+                                : thumbsUpOutline
+                            : thumbsUpOutline
+                            } color={"secondary"}/>
+                        <IonLabel>{this.state.votes}</IonLabel>
                     </IonButton>
                     <IonButton
                         onClick={() => {
