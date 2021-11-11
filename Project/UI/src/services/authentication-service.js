@@ -5,6 +5,7 @@ import {
  } from "cryptico";
 import axios from  "axios";
  import {randomBytes, createHash} from "crypto";
+import { baseUrl } from "./posts-webservice";
 
 export const pubKeyName = "locchat-pubKey";
 export const hashesName = "locchat-hashes";
@@ -38,7 +39,7 @@ export const login = async () => {
     const key = await createKey();
     const pubKey = storage.getItem(pubKeyName);
     // console.log('initiating login with server by sending public key');
-    const result =  await axios.get(`http://localhost/authentication_service/login`, {params: {pubKey: pubKey}});
+    const result =  await axios.get(`http://${baseUrl}/authentication_service/login`, {params: {pubKey: pubKey}});
     // console.log('received encrypted random string');
     var EncrRandString = result.data.EncrRandString;
     // console.log('Decrypting encrypted random string... this will prove that I own the public key');
@@ -57,7 +58,7 @@ export const login = async () => {
     const arr = hashes["hashes"];
     const hash = arr.pop();
     try {
-        await axios.get(`http://localhost/authentication_service/prove`, {params: {pubKey: pubKey, proof: rString, hash: hash}});
+        await axios.get(`http://${baseUrl}/authentication_service/prove`, {params: {pubKey: pubKey, proof: rString, hash: hash}});
     }
     catch (err) {
         console.log(err);
@@ -76,7 +77,7 @@ export const auth = () => {
     hashes = JSON.parse(hashes);
     const arr = hashes["hashes"];
     const hash = arr.pop();
-	var response = axios.get(`http://localhost/authentication_service/auth`, {params: {pubKey: pubKey, hash: hash}})
+	var response = axios.get(`http://${baseUrl}/authentication_service/auth`, {params: {pubKey: pubKey, hash: hash}})
 		.then(result => {
 			console.log('server verified my identity');
 			return true;

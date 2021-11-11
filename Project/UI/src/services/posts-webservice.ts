@@ -1,6 +1,7 @@
 import axios from "axios";
 import { pubKeyName } from "./authentication-service";
 
+export const baseUrl = "localhost";
 export interface ExecutionOutcome<T> {
     code: number;
     data: T;
@@ -54,17 +55,17 @@ export interface VoteResponse {
 
 export class PostsWebservice {
     getComments = async (id: number) => {
-        const response = await axios.get<ExecutionOutcome<Comment[]>>(`http://localhost/comments_service/api/Comments/Comments/${id}`);
+        const response = await axios.get<ExecutionOutcome<Comment[]>>(`http://${baseUrl}/comments_service/api/Comments/Comments/${id}`);
         const result = await response.data;
         return result.data;
     }
-    getTrendingPosts = async () => {
-        const response = await axios.get<ExecutionOutcome<Post[]>>(`http://localhost/posts_service/api/Posts/GetTrending`);
+    getTrendingPosts = async (offset: number = 0, limit: number = 5) => {
+        const response = await axios.get<ExecutionOutcome<Post[]>>(`http://${baseUrl}/posts_service/api/Posts/GetTrending?Limit=${limit}&Offset=${offset}`);
         const result = await response.data;
         return result.data;
     }
     createPost = async (body: PostRequest) => {
-        const response = await axios.post<PostRequest>(`http://localhost/posts_service/api/Posts/Create`, body);
+        const response = await axios.post<PostRequest>(`http://${baseUrl}/posts_service/api/Posts/Create`, body);
     }
     upvote = async (id: number, type: VoteType) => {
         const voteRequest : VoteRequest= {
@@ -72,7 +73,7 @@ export class PostsWebservice {
             pubKey: window.localStorage.getItem(pubKeyName) ?? '',
             type: VoteType[type]
         }
-        const response = await axios.post<VoteRequest, VoteResponse>('http://localhost/votes_service/vote', voteRequest);
+        const response = await axios.post<VoteRequest, VoteResponse>(`http://${baseUrl}/votes_service/vote`, voteRequest);
         return response.msg;
     }
 
@@ -82,7 +83,7 @@ export class PostsWebservice {
             pubKey: window.localStorage.getItem(pubKeyName) ?? '',
             type: VoteType[type]
         }
-        const response = await axios.post<any>('http://localhost/votes_service/isVoted', voteRequest);
+        const response = await axios.post<any>(`http://${baseUrl}/votes_service/isVoted`, voteRequest);
         const result = await response.data!;
         return result.data;   
     }

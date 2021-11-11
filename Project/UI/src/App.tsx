@@ -52,49 +52,49 @@ const App: React.FC = () => {
         </IonButtons>
       </IonToolbar>
     </IonHeader>
-    <IonContent>
-    <IonToast
-        isOpen={showLogoutToast}
-        onDidDismiss={() => setShowLogoutToast(false)}
-        message="Logged out successfully."
-        duration={2000}
-      />
-      <IonReactRouter>
-        <IonTabs>
-            <IonRouterOutlet>
-              <Redirect exact path="/tabs" to="/tabs/nearby" />
-              <Redirect exact path="/" to="/tabs/nearby" />
-              <Route path="/tabs/nearby" render={(props) => <LoggedInContext.Provider value={loginState}>
-                                                              <Nearby {...props}/>
-                                                            </LoggedInContext.Provider>} exact={true} />
-              {
-                !loginState
-                ? <Redirect exact path="/tabs/create" to="/login" />
-                : <Route path="/tabs/create" render={() => <AddPost />} exact={true} />
-              }
-              {
-                loginState
-                ? <Redirect exact path="/login" to="/tabs/nearby" />
-                : <Route path="/login" render={(props) => <Login {...props} loginStateHandler={loginStateHandler}/>} exact={true} />
-              }
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="nearby" href="/tabs/nearby">
-                <IonIcon icon={location} />
-                <IonLabel>Nearby</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="trending" href="/tabs/trending">
-                <IonIcon icon={trendingUp} />
-                <IonLabel>Trending</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="create" href="/tabs/create">
-                <IonIcon icon={create} />
-                <IonLabel>Add</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-    </IonContent>
+    <LoggedInContext.Provider value={loginState}>
+      <IonContent>
+      <IonToast
+          isOpen={showLogoutToast}
+          onDidDismiss={() => setShowLogoutToast(false)}
+          message="Logged out successfully."
+          duration={2000}
+        />
+        <IonReactRouter>
+          <IonTabs>
+              <IonRouterOutlet>
+                <Redirect exact path="/tabs" to="/tabs/nearby" />
+                <Redirect exact path="/" to="/tabs/nearby" />
+                <Route path="/tabs/nearby" render={(props) => <Nearby {...props}/>} exact={true} />
+                {
+                  !loginState
+                  ? <Redirect exact path="/tabs/create" to="/login" />
+                  : <Route path="/tabs/create" render={() => <AddPost />} exact={true} />
+                }
+                {
+                  loginState
+                  ? <Redirect exact path="/login" to="/tabs/nearby" />
+                  : <Route path="/login" render={(props) => <Login {...props} loginStateHandler={loginStateHandler}/>} exact={true} />
+                }
+              </IonRouterOutlet>
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="nearby" href="/tabs/nearby">
+                  <IonIcon icon={location} />
+                  <IonLabel>Nearby</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="trending" href="/tabs/trending">
+                  <IonIcon icon={trendingUp} />
+                  <IonLabel>Trending</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="create" href="/tabs/create">
+                  <IonIcon icon={create} />
+                  <IonLabel>Add</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonContent>
+    </LoggedInContext.Provider>
   </IonApp>);
 };
 

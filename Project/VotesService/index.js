@@ -58,7 +58,7 @@ app.post('/isVoted', (req, res) => {
       if (err) { 
         throw err;
       }
-      const set = new Set();
+      const set = new Set(); 
       for (let i = 0; i < result.length; ++i) {
         let row = result[i];
         set.add(row.ObjectId);

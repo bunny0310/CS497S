@@ -1,25 +1,20 @@
 ﻿<Properties StartupConfiguration="{857E2503-FF4C-429D-B878-CF4600C32CA5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Models/Auth/AuthService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PostsService/Services/PostService.cs">
     <Files>
+      <File FileName="PostsService/ServiceFactory.cs" Line="1" Column="1" IsPinned="True" />
       <File FileName="CommentsService/Startup.cs" Line="11" Column="36" />
-      <File FileName="CommentsService/Controllers/CommentsController.cs" Line="39" Column="46" />
-      <File FileName="Models/Auth/AuthService.cs" Line="10" Column="1" />
+      <File FileName="PostsService/Controllers/PostsController.cs" Line="50" Column="41" />
+      <File FileName="PostsService/Services/PostService.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="PostsService" expanded="True">
-            <Node name="CommentsService" expanded="True">
-              <Node name="Controllers" expanded="True" />
-              <Node name="Models" expanded="True" />
-            </Node>
-            <Node name="Models" expanded="True">
-              <Node name="Auth" expanded="True">
-                <Node name="AuthService.cs" selected="True" />
-              </Node>
-            </Node>
             <Node name="PostsService" expanded="True">
-              <Node name="Models" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="PostService.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
