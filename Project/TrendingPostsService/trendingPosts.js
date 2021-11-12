@@ -11,13 +11,22 @@ class Post {
     }
 }
 
-static class TrendingPosts {
+ class TrendingPosts {
     static trendingPosts = [];
 
     static getTrendingPosts = () => {
         if (this.trendingPosts.length === 0) {
-            var con = Configuration.con;
-            
+            Configuration.query(`SELECT * FROM ${Configuration.postTableName}`)
+            .then(result => {
+               this.trendingPosts.push(1);
+               return this.trendingPosts;
+            })
+            .catch(err => {
+                return err;
+            })           
         }
+        return this.trendingPosts;
     };
 }
+
+module.exports = TrendingPosts;

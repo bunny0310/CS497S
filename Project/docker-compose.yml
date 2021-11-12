@@ -78,6 +78,22 @@ services:
     expose:
       - "5003"
 
+  trending_posts_service:
+    build:
+      context: TrendingPostsService
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+    volumes:
+      - ./TrendingPostsService:/app
+    networks:
+      - network
+    expose:
+      - "5000"
+
   authentication_service:
     build:
       context: AuthenticationService

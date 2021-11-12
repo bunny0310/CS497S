@@ -6,7 +6,7 @@ class Configuration {
   static mysqlPassword = process.env.MYSQL_ROOT_PASSWORD;
   static mysqlDatabase = process.env.MYSQL_DATABASE;
 
-  static postTableName = "Posts";
+  static postTableName = "TrendingPost";
 
   static con = mysql.createConnection({
       host: process.env.MYSQL_HOST,
