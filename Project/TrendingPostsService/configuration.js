@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2/promise");
 
 class Configuration {
   static mysqlHost = process.env.MYSQL_HOST;
@@ -8,26 +8,21 @@ class Configuration {
 
   static postTableName = "TrendingPost";
 
-  static con = mysql.createConnection({
+  static con = async () => {
+    const connection = await mysql.createConnection({
       host: process.env.MYSQL_HOST,
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_ROOT_PASSWORD,
       database: process.env.MYSQL_DATABASE
     });
+    return connection;
+  }
 
-    static query = async (query) => {
-      try {
-        this.con.query(query, (err, result) => {
-          if (err) {
-            throw err;
-          }
-          return result;
-        })
-      }
-      catch (err) {
-        return err;
-      }
-    }
+  static query = async (query) => {
+    const connection = await this.con();
+    const [rows, fields] = await connection.query(query);
+    return rows;
+  }
 }
 
 module.exports = {Configuration};

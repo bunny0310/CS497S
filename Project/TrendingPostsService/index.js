@@ -10,8 +10,22 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.get('/ee', (req, res) => {
-    return res.status(200).json(TrendingPosts.getTrendingPosts());
+app.get('/', async (req, res) => {
+    try {
+        const posts = await TrendingPosts.getTrendingPosts();
+        return res.status(200).json(posts);
+    } catch(err) {
+        return res.status(500).json({"msg": `${err}`});
+    }
+})
+app.post('/updateTrendingPosts', async (req, res) => {
+    try {
+        const post = req.body;
+        await TrendingPosts.updatePost(post);
+        return res.status(200).json({"msg": "Post added successfully"});
+    } catch (err) {
+        return res.status(500).json({"msg": `${err}`});
+    }
 })
 app.listen(port, '0.0.0.0', ()=>{
     console.log(process.env.MYSQL_HOST);

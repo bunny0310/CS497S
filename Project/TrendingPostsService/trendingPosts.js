@@ -14,19 +14,21 @@ class Post {
  class TrendingPosts {
     static trendingPosts = [];
 
-    static getTrendingPosts = () => {
+    static getTrendingPosts = async () => {
         if (this.trendingPosts.length === 0) {
-            Configuration.query(`SELECT * FROM ${Configuration.postTableName}`)
-            .then(result => {
-               this.trendingPosts.push(1);
-               return this.trendingPosts;
-            })
-            .catch(err => {
-                return err;
-            })           
+            const result = await Configuration.query(`SELECT * FROM ${Configuration.postTableName}`);    
+            this.trendingPosts = result; 
         }
         return this.trendingPosts;
     };
+
+    static updateTrendingPosts = async (post) => {
+        const {description, latitude, longitude, secretKey, votes} = post;
+        post.id = this.trendingPosts.length + 1;
+        const result = await Configuration.query(`INSERT INTO ${Configuration.postTableName} (Description, Latitude, Longitude, SecretKey, Votes) VALUES ('${description}', '${latitude}', '${longitude}', '${secretKey}', '${votes}')`);
+        this.trendingPosts.push(post);
+        return result;
+    }
 }
 
 module.exports = TrendingPosts;
