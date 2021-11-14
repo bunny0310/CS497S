@@ -23,9 +23,12 @@ import { clearMemory, login } from '../services/authentication-service';
 import {RouteComponentProps} from 'react-router-dom';
 import axios from 'axios';
 import { ExecutionOutcome, Post } from '../services/posts-webservice';
+import { MessageBus, Messages } from '../services/message-bus';
+import { wire } from '../services/serviceInjection';
 
-interface LoginProps extends RouteComponentProps{
-    loginStateHandler: () => void;
+interface LoginProps extends RouteComponentProps {}
+interface LoginPropsWithServices extends LoginProps{
+    messageBus: MessageBus
 }
 interface LoginState {
     isLoggingIn: boolean;
@@ -36,7 +39,7 @@ interface LoginState {
     showLogInToast: boolean;
 }
 
-class Login extends React.Component<LoginProps, LoginState> {
+class Login extends React.Component<LoginPropsWithServices, LoginState> {
     constructor (props : any) {
         super(props);
         this.state = {
@@ -107,7 +110,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                             ...this.state,
                             showLogInToast: false
                         })
-                        this.props.loginStateHandler();
+                        this.props.messageBus.dispatch<string>(Messages.LoginMessage, "");
                         this.props.history.push("/tabs/nearby");
                     }}
                     message="Logged in successfully."
@@ -158,4 +161,4 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 }
 
-export default Login;
+export default wire<LoginProps>(Login, ["messageBus"]);

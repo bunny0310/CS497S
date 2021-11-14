@@ -21,6 +21,7 @@ class Configuration {
   static query = async (query) => {
     const connection = await this.con();
     const [rows, fields] = await connection.query(query);
+    connection.end();
     return rows;
   }
 }

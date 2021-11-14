@@ -11,7 +11,7 @@ CREATE TABLE `Post` (
 );
 
 CREATE TABLE `TrendingPost` (
-  `Id` int AUTO_INCREMENT,
+  `Id` int,
   `Description` text,
   `Latitude` float,
   `Longitude` float,

@@ -7,8 +7,8 @@ import SkeletonCard from '../components/SkeletonCard';
 import { Post, PostsWebservice, VoteType } from '../services/posts-webservice';
 import { wire } from '../services/serviceInjection';
 
-interface NearbyProps extends RouteComponentProps{};
-interface NearbyPropsWithServices extends NearbyProps {
+interface TrendingProps extends RouteComponentProps{};
+interface TrendingPropsWithServices extends TrendingProps {
     postsWebService: PostsWebservice;
 }
 interface NearbyState {
@@ -16,7 +16,7 @@ interface NearbyState {
     loading: boolean;
     posts: Post[];
 }
-class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
+class Trending extends React.Component<TrendingPropsWithServices, NearbyState> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -45,6 +45,7 @@ class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
         this.props.postsWebService
         .getTrendingPosts(offset, limit) 
         .then((serverPosts) => {
+            console.log(serverPosts);
             if (serverPosts.length > 0)
                 this.props.postsWebService
                 .getVoteStatus(serverPosts.map(post => post.id), VoteType.Post)
@@ -57,13 +58,15 @@ class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
                     return mappedPost
                 })
                const updatedPosts = this.state.posts.concat(serverPosts);
-               console.log(`updated Posts length is ${updatedPosts.length}`);
                 this.setState({
                     infiniteDisabled: (serverPosts.length === 0 || this.state.posts.length + serverPosts.length >= 500),
                     posts: updatedPosts,
                     loading: false
                 });
             })
+            .catch((err) => {
+                console.log(err);
+            });
         });
     }
     render() {
@@ -75,7 +78,7 @@ class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
                 {
                     !this.state.loading
                     ? posts.map((post) => {
-                        return <PostCard {...this.props} description={post.description} id={post.id} isVoted={post.isVoted} key={post.id} votes={post.votes}></PostCard>;
+                        return <PostCard {...this.props} description={post.description} post={post}></PostCard>;
                     })
                     : 
                     <>
@@ -102,4 +105,4 @@ class Nearby extends React.Component<NearbyPropsWithServices, NearbyState> {
     }
 }
 
-export default wire<NearbyProps>(Nearby, ["postsWebService"]);
+export default wire<TrendingProps>(Trending, ["postsWebService"]);

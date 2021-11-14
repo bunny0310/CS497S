@@ -2,7 +2,6 @@ import { Redirect, Route, RouteComponentProps } from 'react-router';
 import { IonApp, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, IonText, IonTitle, IonToast, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { location, trendingUp, create} from 'ionicons/icons';
-import Nearby from './pages/Nearby';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -18,20 +17,31 @@ import './theme/variables.css';
 /* Custom css styles */
 import './App.css';
 import AddPost from './pages/AddPost';
-import { initializeServices } from './services/registerServices';
 import { generateOneTimes, getPublicKey, isLoggedIn } from './services/authentication-service.js';
 import Login from './pages/Login';
 import { clearMemory } from './services/authentication-service.js';
 import React from 'react';
 import { LoggedInContext } from './components/LoggedInContext';
+import { MessageBus, Messages } from './services/message-bus';
+import { wire } from './services/serviceInjection';
+import { PostsWebservice } from './services/posts-webservice';
+import Trending from './pages/Trending';
 
-const App: React.FC = () => {
-  initializeServices();
+interface AppProps {}
+interface AppPropsWithServices extends AppProps {
+  messageBus: MessageBus
+}
+const App = (props: AppPropsWithServices) => {
   const [loginState, setLoginState] = React.useState<boolean>(isLoggedIn());
   const [showLogoutToast, setShowLogoutToast] = React.useState<boolean>(false);
-  const loginStateHandler = () => {
+  React.useEffect(() => {
+  props.messageBus.on(Messages.LogoutMessage, () => {
+    setLoginState(false);
+  });
+  props.messageBus.on(Messages.LoginMessage, () => {
     setLoginState(true);
-  }
+  })
+  })
   return (
   <IonApp>
     <IonHeader>
@@ -45,7 +55,7 @@ const App: React.FC = () => {
             loginState
             ? <>
               <IonText>Hello User {getPublicKey()!.substring(0,5)}</IonText> 
-              <IonButton color="light" size="large" onClick = {() => {clearMemory(); setShowLogoutToast(true); setLoginState(isLoggedIn());}}>Log out</IonButton> 
+              <IonButton color="light" size="large" onClick = {() => {clearMemory(); setShowLogoutToast(true); props.messageBus.dispatch<string>(Messages.LogoutMessage, "");}}>Log out</IonButton> 
               </>
             : <IonButton color="light" size="large" onClick = {() => {window.location.href = window.location.origin + '/login'}}>Log In</IonButton>
           }
@@ -63,9 +73,9 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonTabs>
               <IonRouterOutlet>
-                <Redirect exact path="/tabs" to="/tabs/nearby" />
-                <Redirect exact path="/" to="/tabs/nearby" />
-                <Route path="/tabs/nearby" render={(props) => <Nearby {...props}/>} exact={true} />
+                <Redirect exact path="/tabs" to="/tabs/trending" />
+                <Redirect exact path="/" to="/tabs/trending" />
+                <Route path="/tabs/trending" render={(props) => <Trending {...props}/>} exact={true} />
                 {
                   !loginState
                   ? <Redirect exact path="/tabs/create" to="/login" />
@@ -73,8 +83,8 @@ const App: React.FC = () => {
                 }
                 {
                   loginState
-                  ? <Redirect exact path="/login" to="/tabs/nearby" />
-                  : <Route path="/login" render={(props) => <Login {...props} loginStateHandler={loginStateHandler}/>} exact={true} />
+                  ? <Redirect exact path="/login" to="/tabs/trending" />
+                  : <Route path="/login" render={(props) => <Login {...props} />} exact={true} />
                 }
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
@@ -98,4 +108,4 @@ const App: React.FC = () => {
   </IonApp>);
 };
 
-export default App;
+export default wire<AppProps>(App, ["messageBus"]);
