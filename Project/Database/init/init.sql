@@ -3,7 +3,7 @@ CREATE TABLE `Post` (
   `Description` text,
   `Latitude` float,
   `Longitude` float,
-  `SecretKey` varchar(255),
+  `SecretKey` text,
   `CreatedAt` timestamp DEFAULT CURRENT_TIMESTAMP,
   `UpdatedAt` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Votes` int,
@@ -15,7 +15,7 @@ CREATE TABLE `TrendingPost` (
   `Description` text,
   `Latitude` float,
   `Longitude` float,
-  `SecretKey` varchar(255),
+  `SecretKey` text,
   `CreatedAt` timestamp DEFAULT CURRENT_TIMESTAMP,
   `UpdatedAt` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Votes` int,
@@ -26,7 +26,7 @@ CREATE TABLE `Comment` (
   `Id` int PRIMARY KEY AUTO_INCREMENT,
   `PostId` int,
   `Value` text,
-  `SecretKey` varchar(255),
+  `SecretKey` text,
   `CreatedAt` timestamp DEFAULT CURRENT_TIMESTAMP,
   `UpdatedAt` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

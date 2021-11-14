@@ -20,12 +20,12 @@ export interface Post {
 }
 
 export interface Comment {
-    id: number,
+    id?: number,
     postId: number,
     value: string,
     secretKey: string,
-    createdAt: Date,
-    updatedAt: Date
+    createdAt?: Date,
+    updatedAt?: Date
 }
 
 export interface PostRequest {
@@ -66,6 +66,11 @@ export class PostsWebservice {
     }
     createPost = async (body: PostRequest) => {
         const response = await axios.post<PostRequest>(`http://${baseUrl}/posts_service/api/Posts/Create`, body);
+    }
+    createComment = async (body: Comment) => {
+        const response = await axios.post<any>(`http://${baseUrl}/comments_service/api/Comments/Create`, body);
+        const result = await response.data;
+        return result.data;
     }
     upvote = async (object: Post | Comment, type: VoteType) => {
         const voteRequest : VoteRequest= {

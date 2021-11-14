@@ -7,6 +7,7 @@ using Models.Auth;
 using System.Threading.Tasks;
 using CommentsService.ResultTypes;
 using Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace CommentsService.Controllers
 {
@@ -26,28 +27,33 @@ namespace CommentsService.Controllers
         [HttpGet("id")]
         public IActionResult GetComments(int id)
         {
-            var result = serviceFactory.GetPostServiceReal().GetComments(id);
+            var result = serviceFactory.GetCommentServiceReal().GetComments(id);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
         // POST api/Comments/Create
         [HttpPost()]
         [Route("Create")]
-        public async Task<IActionResult> CreateAsync([FromBody] CommentWithAuth comment)
+        public async Task<IActionResult> CreateAsync([FromBody] Comment comment)
         {
-            var authenticated = await AuthService.IsAuthenticatedAsync(comment.Hash, comment.PublicKey);
-            Console.WriteLine(authenticated);
-            if (!authenticated)
+            //var authenticated = await AuthService.IsAuthenticatedAsync(comment.Hash, comment.PublicKey);
+            //Console.WriteLine(authenticated);
+            //if (!authenticated)
+            //{
+            //    var result = new ExecutionOutcome<Comment>()
+            //    {
+            //        Code = 401,
+            //        Data = null,
+            //        Message = "Authentication failure"
+            //    };
+            //    return StatusCode(result.Code, result);
+            //}
+            if (!ModelState.IsValid)
             {
-                var result = new ExecutionOutcome<Comment>()
-                {
-                    Code = 401,
-                    Data = null,
-                    Message = "Authentication failure"
-                };
-                return StatusCode(result.Code, result);
+                return BadRequest();
             }
-            return Ok(null);
+            var result = serviceFactory.GetCommentServiceReal().CreateComment(comment);
+            return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
     }
 }

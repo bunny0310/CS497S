@@ -69,7 +69,7 @@ const App = (props: AppPropsWithServices) => {
           onDidDismiss={() => setShowLogoutToast(false)}
           message="Logged out successfully."
           duration={2000}
-        />
+      />
         <IonReactRouter>
           <IonTabs>
               <IonRouterOutlet>

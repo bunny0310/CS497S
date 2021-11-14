@@ -7,11 +7,12 @@ export interface InputProps {
     isValid: boolean,
     onChange: (event: CustomEvent) => any
     placeholder: string,
-    validationMessage?: string
+    validationMessage?: string,
+    value?: string
 }
 
 const IonInputWrapper = (props: InputProps) => {
-    const {disabled, isValid, onChange, placeholder, validationMessage} = props;
+    const {disabled, isValid, onChange, placeholder, validationMessage, value} = props;
     const [showValidationError, setShowValidationError] = React.useState<boolean>(false);
     const [fieldClassName, setFieldClassName] = React.useState<string>("field-normal");
 
@@ -39,7 +40,7 @@ const IonInputWrapper = (props: InputProps) => {
     return (
     <>
         {showValidationError && !isValid && validationMessage && <IonText color={"danger"}><h6>{validationMessage}</h6></IonText>}
-        <IonInput className={`adjustSpace ${fieldClassName}`} disabled={disabled ?? false} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder}></IonInput>
+        <IonInput className={`adjustSpace ${fieldClassName}`} disabled={disabled ?? false} onIonBlur={blurHandler} onIonChange={changeHandler} placeholder={placeholder} style={{"width": "auto"}} value={value}></IonInput>
     </>
     );
 }

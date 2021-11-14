@@ -8,5 +8,6 @@ namespace CommentsService.Services
     public interface ICommentService
     {
         public ExecutionOutcome<List<Comment>> GetComments(int id);
+        public ExecutionOutcome<Comment> CreateComment(Comment comment);
     }
 }
