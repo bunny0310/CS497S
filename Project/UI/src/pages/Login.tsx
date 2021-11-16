@@ -111,7 +111,7 @@ class Login extends React.Component<LoginPropsWithServices, LoginState> {
                             showLogInToast: false
                         })
                         this.props.messageBus.dispatch<string>(Messages.LoginMessage, "");
-                        this.props.history.push("/tabs/nearby");
+                        this.props.history.push("/tabs/trending");
                     }}
                     message="Logged in successfully."
                     duration={2000}

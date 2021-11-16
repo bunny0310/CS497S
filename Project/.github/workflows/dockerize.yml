@@ -1,0 +1,64 @@
+name: CI/CD
+
+concurrency: deployment
+
+on:
+  push:
+    branches: [ V2 ]
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel.
+jobs:
+  ui:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
+      
+      # Build and push UI production build image
+      - name: build and push production build image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./UI/
+          file: ./UI/Dockerfile.prod
+          push: true
+          tags: locchat/ui:latest
+          cache-from: type=registery, ref=locchat/ui:latest
+          cache-to: type=inline
+  
+  database:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
+
+      #Build and push Database image       
+      - name: build and push editor frontend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Database/
+          file: ./Database/Dockerfile.prod
+          push: true
+          tags: locchat/database:latest
+          cache-from: type=registery, ref=locchat/database:latest
+          cache-to: type=inline

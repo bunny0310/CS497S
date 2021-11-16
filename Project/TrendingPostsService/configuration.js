@@ -9,8 +9,10 @@ class Configuration {
   static postTableName = "TrendingPost";
 
   static con = async () => {
+    let isProd = process.env.NODE_ENV === 'production';
+    let hostName = isProd ? `${process.env.MYSQL_HOST}-1` : `${process.env.MYSQL_HOST}`;
     const connection = await mysql.createConnection({
-      host: process.env.MYSQL_HOST,
+      host: hostName,
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_ROOT_PASSWORD,
       database: process.env.MYSQL_DATABASE
