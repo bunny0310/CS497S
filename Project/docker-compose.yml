@@ -60,7 +60,6 @@ services:
       MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
     volumes:
       - ./PostsService/CommentsService:/app
-      - ./PostsService/Models:/Models
     networks:
       - network
     expose:
@@ -83,29 +82,13 @@ services:
     expose:
       - "5003"
 
-  trending_posts_service:
-    build:
-      context: TrendingPostsService
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
-    volumes:
-      - ./TrendingPostsService:/app
-    networks:
-      - network
-    expose:
-      - "5000"
-
   authentication_service:
     build:
       context: AuthenticationService
     container_name: project_authentication_service
     restart: always
-    # volumes:
-    #   - ./AuthenticationService:/usr/src/app
+    volumes:
+      - ./AuthenticationService:/usr/src/app
     networks:
       - network
     expose:

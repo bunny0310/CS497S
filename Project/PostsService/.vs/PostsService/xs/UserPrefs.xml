@@ -1,13 +1,13 @@
 ﻿<Properties StartupConfiguration="{857E2503-FF4C-429D-B878-CF4600C32CA5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="CommentsService/Startup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CommentsService/Services/CommentService.cs">
     <Files>
-      <File FileName="PostsService/ServiceFactory.cs" Line="1" Column="1" IsPinned="True" />
-      <File FileName="CommentsService/Controllers/CommentsController.cs" Line="14" Column="20" />
-      <File FileName="CommentsService/Services/CommentService.cs" Line="81" Column="48" />
-      <File FileName="Models/Comment.cs" Line="1" Column="1" />
-      <File FileName="Models/Startup.cs" Line="27" Column="14" />
-      <File FileName="PostsService/Startup.cs" Line="28" Column="14" />
-      <File FileName="CommentsService/Startup.cs" Line="36" Column="16" />
+      <File FileName="CommentsService/Controllers/CommentsController.cs" Line="20" Column="25" />
+      <File FileName="CommentsService/Services/ICommentService.cs" Line="9" Column="6" />
+      <File FileName="CommentsService/Startup.cs" Line="1" Column="1" />
+      <File FileName="CommentsService/Program.cs" Line="28" Column="6" />
+      <File FileName="PostsService/Program.cs" Line="7" Column="1" />
+      <File FileName="CommentsService/appsettings.json" Line="1" Column="1" />
+      <File FileName="CommentsService/Services/CommentService.cs" Line="33" Column="53" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,13 +15,12 @@
           <Node name="PostsService" expanded="True">
             <Node name="CommentsService" expanded="True">
               <Node name="Controllers" expanded="True" />
-              <Node name="Services" expanded="True" />
-              <Node name="Startup.cs" selected="True" />
+              <Node name="ResultTypes" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="CommentService.cs" selected="True" />
+              </Node>
             </Node>
-            <Node name="PostsService" expanded="True">
-              <Node name="Controllers" expanded="True" />
-              <Node name="Services" expanded="True" />
-            </Node>
+            <Node name="PostsService" expanded="True" />
           </Node>
         </State>
       </Pad>

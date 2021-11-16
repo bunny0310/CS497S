@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using PostsService.Models;
 using PostsService.Services;
 using Models;
-using PostsService.ResultTypes;
-using System.Collections.Generic;
 
 namespace PostsService.Controllers
 {
@@ -45,11 +43,9 @@ namespace PostsService.Controllers
         // GET api/Posts/GetTrending
         [Route("GetTrending")]
         [HttpGet]
-        public IActionResult GetTrending(int? Offset, int? Limit)
+        public IActionResult GetTrending()
         {
-            var offsetVal = Offset.HasValue ? Offset.Value : 0;
-            var limitVal = Limit.HasValue ? Limit.Value : 5;
-            var result = serviceFactory.GetPostServiceReal().GetTrendingPosts(offsetVal, limitVal);
+            var result = serviceFactory.GetPostServiceReal().GetTrendingPosts();
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
     }
