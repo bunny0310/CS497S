@@ -71,7 +71,7 @@ class PostCard extends React.Component<PostCardPropsWithServices, PostCardState>
     }
 
     newCommentChangeHandler = async (event: CustomEvent) => {
-        const val = event.detail.value.trim();
+        const val = event.detail.value;
         if (val.length < 5) {
             this.setState({
                 ...this.state,
