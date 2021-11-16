@@ -7,12 +7,12 @@ namespace CommentsService
 {
     public class ServiceFactory
     {
-        public ICommentService GetPostServiceReal()
+        public ICommentService GetCommentServiceReal()
         {
             return new CommentService();
         }
 
-        public ICommentService GetPostServiceMockDb(DbContextOptions<ProjectContext> options)
+        public ICommentService GetCommentServiceRealMockDb(DbContextOptions<ProjectContext> options)
         {
             return new CommentService(options);    
         }

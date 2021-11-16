@@ -1,3 +1,4 @@
+import { MessageBus } from "./message-bus";
 import { PostsWebservice } from "./posts-webservice";
 
 export class RegisterService {
@@ -19,4 +20,5 @@ export class RegisterService {
 
 export function initializeServices () {
     RegisterService.register("postsWebService", new PostsWebservice());
+    RegisterService.register("messageBus", new MessageBus());
 }
