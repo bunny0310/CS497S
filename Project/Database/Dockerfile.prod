@@ -1,0 +1,5 @@
+FROM mysql
+COPY ./init/init.sql /docker-entrypoint-initdb.d/init.sql
+COPY ./init/post.sql /docker-entrypoint-initdb.d/post.sql
+COPY ./init/post_comment.sql /docker-entrypoint-initdb.d/post_comment.sql
+COPY ./init/trending_post.sql /docker-entrypoint-initdb.d/trending_post.sql
