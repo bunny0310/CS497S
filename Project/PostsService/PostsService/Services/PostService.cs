@@ -12,9 +12,10 @@ namespace PostsService.Services
         private DbContextOptions<ProjectContext> options;
         public PostService()
         {
+
         }
 
-        public PostService(DbContextOptions<ProjectContext> options) : this()
+        public PostService(DbContextOptions<ProjectContext> options)
         {
             this.options = options;
         }
@@ -79,51 +80,29 @@ namespace PostsService.Services
             }
         }
 
-        public ExecutionOutcome<List<Post>> GetTrendingPosts(int Offset = 0, int Limit = 5)
+        public ExecutionOutcome<List<Post>> GetTrendingPosts()
         {
             try
-            { 
-                var trendingPosts = Cache.TrendingPosts;
-                if (trendingPosts.Count == 0)
+            {
+                using (var context = options != null
+                    ? new ProjectContext(options)
+                    : new ProjectContext())
                 {
-                    using (var context = options != null
-                        ? new ProjectContext(options)
-                        : new ProjectContext())
+                    var dateCurrentMinus7Days = DateTime.UtcNow.AddDays(-7);
+                    var list = context.Posts
+                        .Where(post => post.CreatedAt > dateCurrentMinus7Days)
+                        .Where(post => post.Votes > 10)
+                        .ToList();
+                    return new ExecutionOutcome<List<Post>>()
                     {
-                        var dateCurrentMinus7Days = DateTime.UtcNow.AddDays(-7);
-                        trendingPosts = context.Posts
-                            .Where(post => post.CreatedAt > dateCurrentMinus7Days)
-                            .Where(post => post.Votes > 10)
-                            .ToList();
-                        Cache.TrendingPosts = trendingPosts;
-                    }
-                }
-
-                if (Offset < 0 || Limit < 0)
-                {
-                    var errorResult = new ExecutionOutcome<List<Post>>()
-                    {
-                        Code = 400,
-                        Data = null,
-                        Message = "Limit or Offset can't be less than 0."
+                        Code = 200,
+                        Data = list,
+                        Message = "Success"
                     };
-                    return errorResult;
                 }
-                Limit = Offset + Limit > trendingPosts.Count
-                    ? trendingPosts.Count - Offset
-                    : Limit;
-                return new ExecutionOutcome<List<Post>>()
-                {
-                    Code = 200,
-                    Data = Offset < trendingPosts.Count
-                        ? trendingPosts.GetRange(Offset, Limit)
-                        : new List<Post>(),
-                    Message = "Success"
-                };
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 return new ExecutionOutcome<List<Post>>()
                 {
                     Code = 500,

@@ -1,10 +1,8 @@
 const express = require('express');
 const cryptico = require('cryptico');
 const crypto = require('crypto');
-const cors = require('cors');
 
 const app = express();
-app.use(cors());
 let keyStrings = {};
 let oneTimes = {};
 

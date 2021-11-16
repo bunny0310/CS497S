@@ -1,7 +1,7 @@
 import React from "react";
 import { RegisterService } from "./registerServices";
 
-export function wire<TWithoutServices> (Component: React.ComponentType<any>, services: string[]) : React.ComponentType<any> {
+export function wire<TWithoutServices> (Component: React.ComponentType<any>, services: string[]) {
     class ComponentWithInjectedServices extends React.Component {
         mappedServices : any = {};
         constructor(props: TWithoutServices) {
