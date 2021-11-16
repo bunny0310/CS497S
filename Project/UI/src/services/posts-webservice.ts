@@ -3,7 +3,7 @@ import { pubKeyName } from "./authentication-service";
 
 export const baseUrl = process.env.NODE_ENV === 'production'
 ? process.env.REACT_APP_URL
-: 'http://localhost';
+: 'localhost';
 export interface ExecutionOutcome<T> {
     code: number;
     data: T;
