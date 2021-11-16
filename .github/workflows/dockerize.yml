@@ -31,8 +31,8 @@ jobs:
       - name: build and push production build image
         uses: docker/build-push-action@v2
         with:
-          context: ./UI/
-          file: ./UI/Dockerfile.prod
+          context: ./Project/UI/
+          file: ./Project/UI/Dockerfile.prod
           push: true
           tags: locchat/ui:latest
           cache-from: type=registery, ref=locchat/ui:latest
@@ -56,8 +56,8 @@ jobs:
       - name: build and push editor frontend
         uses: docker/build-push-action@v2
         with:
-          context: ./Database/
-          file: ./Database/Dockerfile.prod
+          context: ./Project/Database/
+          file: ./Project/Database/Dockerfile.prod
           push: true
           tags: locchat/database:latest
           cache-from: type=registery, ref=locchat/database:latest
