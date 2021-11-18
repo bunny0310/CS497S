@@ -1,4 +1,4 @@
-# <img src="https://static.thenounproject.com/png/407526-200.png" height="40" width="40"> Posts Service
+# <img src="https://static.thenounproject.com/png/407526-200.png" height="40" width="40"> Trending Posts Service
 
 1. This service is responsible for the retrieval of the current Trending Posts in the world.
 2. Communicates directly with the database (eventually with Redis cache as well).
