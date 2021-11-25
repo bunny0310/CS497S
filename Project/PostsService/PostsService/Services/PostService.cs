@@ -26,14 +26,15 @@ namespace PostsService.Services
                 {
                     throw new ArgumentNullException(nameof(post));
                 }
+                
+                post.CreatedAt = DateTime.UtcNow;
+                post.UpdatedAt = DateTime.UtcNow;
+                int shardNumber = (int)((post.SecretKey[post.SecretKey.Length - 1] % 3) + 1);
+                Console.WriteLine("abc" + shardNumber); // REMOVE LATER
                 using (var context = options != null
-                    ? new ProjectContext(options)
-                    : new ProjectContext())
+                    ? new ProjectContext(options, SettingsManager.RUN_MODE, shardNumber)
+                    : new ProjectContext(SettingsManager.RUN_MODE, shardNumber))
                 {
-                    post.CreatedAt = DateTime.UtcNow;
-                    post.UpdatedAt = DateTime.UtcNow;
-                    HashAlgorithm sha = SHA256.Create();
-                    post.SecretKey = sha.ComputeHash(BitConverter.GetBytes(post.CreatedAt.Ticks)).ToString(); // FIXME
                     context.Add(post);
                     context.SaveChanges();
                     var result = new ExecutionOutcome<Post>()
@@ -75,60 +76,6 @@ namespace PostsService.Services
                     Message = "Failure " + e.StackTrace,
                     Data = null,
                     Code = 500
-                };
-            }
-        }
-
-        public ExecutionOutcome<List<Post>> GetTrendingPosts(int Offset = 0, int Limit = 5)
-        {
-            try
-            { 
-                var trendingPosts = Cache.TrendingPosts;
-                if (trendingPosts.Count == 0)
-                {
-                    using (var context = options != null
-                        ? new ProjectContext(options)
-                        : new ProjectContext())
-                    {
-                        var dateCurrentMinus7Days = DateTime.UtcNow.AddDays(-7);
-                        trendingPosts = context.Posts
-                            .Where(post => post.CreatedAt > dateCurrentMinus7Days)
-                            .Where(post => post.Votes > 10)
-                            .ToList();
-                        Cache.TrendingPosts = trendingPosts;
-                    }
-                }
-
-                if (Offset < 0 || Limit < 0)
-                {
-                    var errorResult = new ExecutionOutcome<List<Post>>()
-                    {
-                        Code = 400,
-                        Data = null,
-                        Message = "Limit or Offset can't be less than 0."
-                    };
-                    return errorResult;
-                }
-                Limit = Offset + Limit > trendingPosts.Count
-                    ? trendingPosts.Count - Offset
-                    : Limit;
-                return new ExecutionOutcome<List<Post>>()
-                {
-                    Code = 200,
-                    Data = Offset < trendingPosts.Count
-                        ? trendingPosts.GetRange(Offset, Limit)
-                        : new List<Post>(),
-                    Message = "Success"
-                };
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return new ExecutionOutcome<List<Post>>()
-                {
-                    Code = 500,
-                    Data = null,
-                    Message = "Failure " + e.StackTrace,
                 };
             }
         }

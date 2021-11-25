@@ -1,0 +1,82 @@
+version: '3.4'
+
+services:
+  database-shard-1:
+    image: mysql
+    deploy:
+      replicas: 1
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+    - ./Database/init:/docker-entrypoint-initdb.d
+    networks:
+    - network
+    security_opt:
+      - seccomp:unconfined
+    # command: --secure-file-priv=""
+    ports:
+      - "3306:3306"
+
+  database-shard-2:
+    image: mysql
+    deploy:
+      replicas: 1
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+    - ./Database/init:/docker-entrypoint-initdb.d
+    networks:
+    - network
+    security_opt:
+      - seccomp:unconfined
+    # command: --secure-file-priv=""
+    ports:
+      - "3307:3306"
+
+  database-shard-3:
+    image: mysql
+    deploy:
+      replicas: 1
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+    - ./Database/init:/docker-entrypoint-initdb.d
+    networks:
+    - network
+    security_opt:
+      - seccomp:unconfined
+    # command: --secure-file-priv=""
+    ports:
+      - "3308:3306"
+  
+  posts_service:
+    image: 127.0.0.1:5000/posts_service:latest
+    build: .
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+      STACK_NAME: ${SWARM_STACK_NAME}
+      RUN_MODE: Production
+
+    volumes:
+      - ./PostsService/PostsService:/app
+    networks:
+      - network
+    ports:
+      - "5001:5000"
+
+      
+networks:
+  network:

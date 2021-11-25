@@ -29,7 +29,7 @@ namespace PostsService.Controllers
             {
                 return BadRequest(postRequest);
             }
-            var result = serviceFactory.GetPostServiceReal().GetPosts(postRequest.Miles, postRequest.Latitude, postRequest.Longitude);
+            var result = serviceFactory.GetPostService().GetPosts(postRequest.Miles, postRequest.Latitude, postRequest.Longitude);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
 
@@ -38,18 +38,7 @@ namespace PostsService.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Post post)
         {
-            var result = serviceFactory.GetPostServiceReal().CreatePost(post);
-            return result.Code == 200 ? Ok(result) : StatusCode(500, result);
-        }
-
-        // GET api/Posts/GetTrending
-        [Route("GetTrending")]
-        [HttpGet]
-        public IActionResult GetTrending(int? Offset, int? Limit)
-        {
-            var offsetVal = Offset.HasValue ? Offset.Value : 0;
-            var limitVal = Limit.HasValue ? Limit.Value : 5;
-            var result = serviceFactory.GetPostServiceReal().GetTrendingPosts(offsetVal, limitVal);
+            var result = serviceFactory.GetPostService().CreatePost(post);
             return result.Code == 200 ? Ok(result) : StatusCode(500, result);
         }
     }

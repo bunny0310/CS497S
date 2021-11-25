@@ -10,13 +10,19 @@ namespace Models
 {
     public partial class ProjectContext : DbContext
     {
-        public ProjectContext()
+        string ConnectionString { get; set; }
+
+        public ProjectContext(string deploymentMode = null, int shardNumber = 1)
         {
+            deploymentMode ??= SettingsManager.DEVELOPMENT;
+            ConnectionString = Util.GenerateDatabaseConnectionString(deploymentMode, shardNumber);
         }
 
-        public ProjectContext(DbContextOptions<ProjectContext> options)
+        public ProjectContext(DbContextOptions<ProjectContext> options, string deploymentMode = null, int shardNumber = -1)
             : base(options)
         {
+            deploymentMode = deploymentMode ?? SettingsManager.DEVELOPMENT;
+            ConnectionString = Util.GenerateDatabaseConnectionString(deploymentMode, shardNumber);
         }
 
         public virtual DbSet<Comment> Comments { get; set; }
@@ -28,7 +34,7 @@ namespace Models
             {
                 optionsBuilder
                     .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
-                    .UseMySQL(Util.GenerateDatabaseConnectionString());
+                    .UseMySQL(ConnectionString);
             }
         }
 
