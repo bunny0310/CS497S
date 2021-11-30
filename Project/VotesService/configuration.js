@@ -15,7 +15,7 @@ class Configuration {
             });
         return con;
     }
-    static numberOfShards = 2;
+    static numberOfShards = parseInt(process.env.NUMBER_SHARDS);
 }
 
 module.exports = {Configuration};

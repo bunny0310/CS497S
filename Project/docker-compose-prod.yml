@@ -1,6 +1,16 @@
 version: '3.4'
 
 services:
+  api_gateway:
+    image: locchat/apigateway:latest
+    deploy:
+      replicas: 2
+    restart: always
+    networks:
+      - network
+    ports:
+      - "80:80"
+
   database-1:
     image: locchat/database
     deploy:
@@ -35,19 +45,33 @@ services:
     expose:
       - "3306"
   
-  # comments_service:
-  #   image: locchat/commentsservice:latest
-  #   restart: always
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
-  #     MYSQL_USER: ${MYSQL_USER}
-  #     MYSQL_HOST: ${SWARM_STACK_NAME}_${MYSQL_DOCKER_SERVICE_NAME}
+  comments_service:
+    image: locchat/commentsservice:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${SWARM_STACK_NAME}_${MYSQL_DOCKER_SERVICE_NAME}
+      NUMBER_SHARDS: 2
+    networks:
+      - network
+    expose:
+      - "5000"
 
-  #   networks:
-  #     - network
-  #   ports:
-  #     - "5000:5000"
+  posts_service:
+    image: locchat/postsservice:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${SWARM_STACK_NAME}_${MYSQL_DOCKER_SERVICE_NAME}
+      NUMBER_SHARDS: 2
+    networks:
+      - network
+    expose:
+      - "5000"
 
   trending_posts_service:
     image: locchat/trendingpostsservice:latest
@@ -57,9 +81,41 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_HOST: ${SWARM_STACK_NAME}_${MYSQL_DOCKER_SERVICE_NAME}
+      NUMBER_SHARDS: 2
+    networks:
+      - network
+    expose:
+      - "5000"
+
+  votes_service:
+    image: locchat/trendingpostsservice:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+      NUMBER_SHARDS: 2
+    networks:
+      - network
+    expose:
+      - "5003"
+
+  authentication_service:
+    image: locchat/authenticationservice:latest
+    restart: always
+    networks:
+      - network
+    expose:
+      - "5000"
+
+  ui:
+    image: locchat/ui:latest
+    restart: always
     networks:
       - network
     ports:
-      - "5001:5000"
+      - "81:80"
+
 networks:
   network:

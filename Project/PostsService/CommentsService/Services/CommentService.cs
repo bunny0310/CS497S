@@ -25,7 +25,7 @@ namespace CommentsService.Services
         {
             try 
             {
-                int shardNumber = (comment.PostId % 2) + 1;
+                int shardNumber = (comment.PostId % SettingsManager.NUMBER_SHARDS) + 1;
                 Console.WriteLine($"Putting the comment into shard number {shardNumber}");
 
                 using (var context = options != null
@@ -79,8 +79,8 @@ namespace CommentsService.Services
             try
             {
                 using (var context = options != null
-                    ? new ProjectContext(options, SettingsManager.RUN_MODE, (id % 3) + 1)
-                    : new ProjectContext(SettingsManager.RUN_MODE, (id % 2) + 1))
+                    ? new ProjectContext(options, SettingsManager.RUN_MODE, (id % SettingsManager.NUMBER_SHARDS) + 1)
+                    : new ProjectContext(SettingsManager.RUN_MODE, (id % SettingsManager.NUMBER_SHARDS) + 1))
                 {
                     var list = context.Comments
                         .Where(comment => comment.PostId == id)
