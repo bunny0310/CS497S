@@ -14,10 +14,10 @@ namespace Models
             var username = Environment.GetEnvironmentVariable("MYSQL_USER");
             var password = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");
             var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
-            if (deploymentMode == SettingsManager.PRODUCTION)
+            if (deploymentMode.Equals(SettingsManager.PRODUCTION, StringComparison.InvariantCultureIgnoreCase))
             {
                 var stackName = Environment.GetEnvironmentVariable("STACK_NAME");
-                host = $"{stackName}_{host}-shard-{shardNumber}";
+                host = $"{host}-{shardNumber}";
             }
             return $"Server={host};User={username};Password={password};Database={db};";
         }

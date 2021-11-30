@@ -50,33 +50,4 @@ app.post('/isVoted', async (req, res) => {
 app.listen(port, '0.0.0.0', () => {
   console.log(`votes service listening at http://localhost:${port}`)
 })
-
-async function databaseContext(...queries){
-    if (queries.length === 0) {
-      return null;
-    }
-    const connection = await mysql.createConnection({
-      host: process.env.MYSQL_HOST,
-      user: process.env.MYSQL_USER,
-      password: process.env.MYSQL_ROOT_PASSWORD,
-      database: process.env.MYSQL_DATABASE
-    });
-    try {
-      let queryResults = [];
-      await connection.beginTransaction();
-        for (let queryObj of queries) {
-          const result = await connection.query(queryObj["query"]);
-            if (queryObj.wantResult) {
-              queryResults.push(result);
-            }
-        }
-      await connection.commit();
-      return queryResults;
-    }
-    catch (err) {
-      await connection.rollback();
-      console.log(err);
-      return null;
-    }
-}
     

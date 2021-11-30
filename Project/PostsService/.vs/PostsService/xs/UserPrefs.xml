@@ -1,15 +1,16 @@
 ﻿<Properties StartupConfiguration="{857E2503-FF4C-429D-B878-CF4600C32CA5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="PostsService/Controllers/PostsController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PostsService/Program.cs">
     <Files>
-      <File FileName="PostsService/Services/PostService.cs" Line="34" Column="1" />
       <File FileName="PostsService/Services/IPostService.cs" Line="11" Column="100" />
-      <File FileName="Models/Util.cs" Line="26" Column="37" />
-      <File FileName="Models/ProjectContext.cs" Line="15" Column="79" />
-      <File FileName="CommentsService/Services/CommentService.cs" Line="75" Column="1" />
-      <File FileName="Models/SettingsManager.cs" Line="8" Column="6" />
-      <File FileName="CommentsService/Services/ICommentService.cs" Line="13" Column="1" />
-      <File FileName="CommentsService/Controllers/CommentsController.cs" Line="23" Column="10" />
-      <File FileName="PostsService/Controllers/PostsController.cs" Line="48" Column="1" />
+      <File FileName="Models/Util.cs" Line="17" Column="110" />
+      <File FileName="Models/ProjectContext.cs" Line="12" Column="6" />
+      <File FileName="Models/SettingsManager.cs" Line="18" Column="55" />
+      <File FileName="Models/Program.cs" Line="1" Column="1" />
+      <File FileName="CommentsService/Program.cs" Line="17" Column="1" />
+      <File FileName="CommentsService/Controllers/CommentsController.cs" Line="30" Column="76" />
+      <File FileName="CommentsService/Services/CommentService.cs" Line="28" Column="54" />
+      <File FileName="PostsService/Services/PostService.cs" Line="30" Column="50" />
+      <File FileName="PostsService/Program.cs" Line="12" Column="76" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,9 +22,9 @@
             </Node>
             <Node name="Models" expanded="True" />
             <Node name="PostsService" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="PostsController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
+              <Node name="Services" expanded="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>

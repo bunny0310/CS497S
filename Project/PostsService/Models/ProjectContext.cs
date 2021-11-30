@@ -14,11 +14,11 @@ namespace Models
 
         public ProjectContext(string deploymentMode = null, int shardNumber = 1)
         {
-            deploymentMode ??= SettingsManager.DEVELOPMENT;
+            deploymentMode = deploymentMode ?? SettingsManager.DEVELOPMENT;
             ConnectionString = Util.GenerateDatabaseConnectionString(deploymentMode, shardNumber);
         }
 
-        public ProjectContext(DbContextOptions<ProjectContext> options, string deploymentMode = null, int shardNumber = -1)
+        public ProjectContext(DbContextOptions<ProjectContext> options, string deploymentMode = null, int shardNumber = 1)
             : base(options)
         {
             deploymentMode = deploymentMode ?? SettingsManager.DEVELOPMENT;

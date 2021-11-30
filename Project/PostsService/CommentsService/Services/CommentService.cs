@@ -23,9 +23,9 @@ namespace CommentsService.Services
 
         public ExecutionOutcome<Comment> CreateComment(Comment comment)
         {
-            try
+            try 
             {
-                int shardNumber = (comment.PostId % 3) + 1;
+                int shardNumber = (comment.PostId % 2) + 1;
                 Console.WriteLine($"Putting the comment into shard number {shardNumber}");
 
                 using (var context = options != null
@@ -73,5 +73,37 @@ namespace CommentsService.Services
             }
         }
 
+
+        public ExecutionOutcome<List<Comment>> GetComments(int id)
+        {
+            try
+            {
+                using (var context = options != null
+                    ? new ProjectContext(options, SettingsManager.RUN_MODE, (id % 3) + 1)
+                    : new ProjectContext(SettingsManager.RUN_MODE, (id % 2) + 1))
+                {
+                    var list = context.Comments
+                        .Where(comment => comment.PostId == id)
+                        .OrderBy(comment => comment.UpdatedAt)
+                        .ToList();
+
+                    return new ExecutionOutcome<List<Comment>>()
+                    {
+                        Code = 200,
+                        Data = list,
+                        Message = "Success"
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                return new ExecutionOutcome<List<Comment>>()
+                {
+                    Code = 500,
+                    Data = null,
+                    Message = "Failure " + e.StackTrace,
+                };
+            }
+        }
     }
 }

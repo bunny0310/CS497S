@@ -29,7 +29,7 @@ namespace PostsService.Services
                 
                 post.CreatedAt = DateTime.UtcNow;
                 post.UpdatedAt = DateTime.UtcNow;
-                int shardNumber = (int)((post.SecretKey[post.SecretKey.Length - 1] % 3) + 1);
+                int shardNumber = (int)((post.SecretKey[post.SecretKey.Length - 1] % 2) + 1);
                 Console.WriteLine("abc" + shardNumber); // REMOVE LATER
                 using (var context = options != null
                     ? new ProjectContext(options, SettingsManager.RUN_MODE, shardNumber)

@@ -8,7 +8,8 @@ namespace PostsService
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine(Util.GenerateDatabaseConnectionString());
+            if (SettingsManager.RUN_MODE.Equals(SettingsManager.DEVELOPMENT, StringComparison.InvariantCultureIgnoreCase))
+                Console.WriteLine(Util.GenerateDatabaseConnectionString());
             CreateHostBuilder(args).Build().Run();
         }
 

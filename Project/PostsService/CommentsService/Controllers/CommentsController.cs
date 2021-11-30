@@ -22,6 +22,15 @@ namespace CommentsService.Controllers
             this.serviceFactory = serviceFactory;
         }
 
+        // GET api/Comments/Comments/{Post Id}
+        [Route("Comments/{id}")]
+        [HttpGet("id")]
+        public IActionResult GetComments(int id)
+        {
+            var result = serviceFactory.GetCommentServiceReal().GetComments(id);
+            return result.Code == 200 ? Ok(result) : StatusCode(500, result);
+        }
+
         // POST api/Comments/Create
         [HttpPost()]
         [Route("Create")]
