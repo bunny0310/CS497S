@@ -14,6 +14,9 @@ services:
   database-1:
     image: locchat/database:latest
     deploy:
+      placement: 
+        constraints: 
+          - node.role == manager
       replicas: 1
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -31,6 +34,9 @@ services:
   database-2:
     image: locchat/database:latest
     deploy:
+      placement: 
+        constraints: 
+          - node.role != manager
       replicas: 1
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -88,13 +94,13 @@ services:
       - "5000"
 
   votes_service:
-    image: locchat/trendingpostsservice:latest
+    image: locchat/votesservice:latest
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_HOST: ${MYSQL_DOCKER_SERVICE_NAME}
+      MYSQL_HOST: ${SWARM_STACK_NAME}_${MYSQL_DOCKER_SERVICE_NAME}
       NUMBER_SHARDS: 2
     networks:
       - network

@@ -12,6 +12,85 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel.
 jobs:
+
+  api_gateway:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
+      
+      # Build and push production build image
+      - name: build and push production build image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Project/APIGateway/
+          file: ./Project/APIGateway/Dockerfile.prod
+          push: true
+          tags: locchat/apigateway:latest
+          cache-from: type=registery, ref=locchat/apigateway:latest
+          cache-to: type=inline
+  
+  posts_service:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
+      
+      # Build and push production build image
+      - name: build and push production build image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Project/PostsService/
+          file: ./Project/PostsService/Dockerfile.posts.prod
+          push: true
+          tags: locchat/postsservice:latest
+          cache-from: type=registery, ref=locchat/postsservice:latest
+          cache-to: type=inline
+
+  comments_service:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
+      
+      # Build and push production build image
+      - name: build and push production build image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Project/PostsService/
+          file: ./Project/PostsService/Dockerfile.comments.prod
+          push: true
+          tags: locchat/commentsservice:latest
+          cache-from: type=registery, ref=locchat/commentsservice:latest
+          cache-to: type=inline
+
   ui:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -27,7 +106,7 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
       
-      # Build and push UI production build image
+      # Build and push production build image
       - name: build and push production build image
         uses: docker/build-push-action@v2
         with:
@@ -52,8 +131,8 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
 
-      #Build and push Database image       
-      - name: build and push editor frontend
+      #Build and push production build image       
+      - name: build and push production build image
         uses: docker/build-push-action@v2
         with:
           context: ./Project/Database/
@@ -62,3 +141,96 @@ jobs:
           tags: locchat/database:latest
           cache-from: type=registery, ref=locchat/database:latest
           cache-to: type=inline
+
+  authentication_service:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
+      
+      # Build and push production build image
+      - name: build and push production build image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Project/AuthenticationService/
+          file: ./Project/AuthenticationService/Dockerfile.prod
+          push: true
+          tags: locchat/authenticationservice:latest
+          cache-from: type=registery, ref=locchat/authenticationservice:latest
+          cache-to: type=inline
+
+  trending_posts_service:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
+
+      #Build and push production build image     
+      - name: Build and push production build image 
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Project/TrendingPostsService/
+          file: ./Project/TrendingPostsService/Dockerfile.prod
+          push: true
+          tags: locchat/trendingpostsservice:latest
+          cache-from: type=registery, ref=locchat/trendingpostsservice:latest
+          cache-to: type=inline
+
+  votes_service:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p '${{ secrets.DOCKER_HUB_PASS }}'
+
+      #Build and push production build image        
+      - name: Build and push production build image 
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Project/VotesService/
+          file: ./Project/VotesService/Dockerfile.prod
+          push: true
+          tags: locchat/votesservice:latest
+          cache-from: type=registery, ref=locchat/votesservice:latest
+          cache-to: type=inline
+
+  Deploy:
+    needs: [api_gateway, ui, database, votes_service, authentication_service, trending_posts_service, comments_service, posts_service]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Deploy in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.AWS_KEY  }}
+            
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ec2-user@54.237.135.92 '
+            sh pullImages.sh
+            sh rollingUpdates.sh
+          '

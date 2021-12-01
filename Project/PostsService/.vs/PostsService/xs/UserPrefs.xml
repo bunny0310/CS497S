@@ -10,7 +10,6 @@
       <File FileName="CommentsService/Services/CommentService.cs" Line="50" Column="48" />
       <File FileName="PostsService/Services/PostService.cs" Line="35" Column="87" />
       <File FileName="PostsService/Program.cs" Line="12" Column="76" />
-      <File FileName="Models/SettingsManager.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
