@@ -16,7 +16,7 @@ RUN npm install react-scripts@3.4.1 -g --silent
 # add app
 COPY . ./
 
-RUN REACT_APP_URL=http://localhost npm run build
+RUN REACT_APP_URL=54.237.135.92 npm run build
 
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
