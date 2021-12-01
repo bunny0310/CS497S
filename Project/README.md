@@ -16,4 +16,4 @@
 1. Ensure you have docker installed.
 2. Clone the repo and checkout V1 branch
 3. Inside the terminal, move into the Project directory.
-4. Do a *docker-compose up -d*.
+4. Do a *docker-compose up -d*. 
